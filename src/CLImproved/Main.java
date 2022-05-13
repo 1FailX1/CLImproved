@@ -14,6 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        Backend.init();
         int x = 15;
         stage.setTitle("CLImproved");
         stage.setResizable(false);

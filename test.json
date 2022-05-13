@@ -1,0 +1,46 @@
+[
+  {
+    "category": "user EXEC mode",
+    "commands": [
+      {
+        "command": "reload",
+        "description": "Startet das System neu",
+        "type": "command"
+      },
+      {
+        "command": "show",
+        "description": "Zeigt Informationen über das System an",
+        "type": "command",
+        "commands": [
+          {
+            "command": "ip interface brief",
+            "description": "",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "priviledged EXEC mode",
+    "commands": [
+      {
+        "command": "reload",
+        "description": "Startet das System neu",
+        "type": "command"
+      },
+      {
+        "command": "show",
+        "description": "Zeigt Informationen über das System an",
+        "type": "command",
+        "commands": [
+          {
+            "command": "ip interface brief",
+            "description": "",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+]
