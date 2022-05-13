@@ -7,14 +7,14 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+//test
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-
+        int x = 15;
         stage.setTitle("CLImproved");
         stage.setResizable(false);
         stage.setMinHeight(1280);
