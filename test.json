@@ -3,6 +3,10 @@
     "category": "user EXEC mode",
     "commands": [
       {
+        "command": "Test-command",
+        "type": "command"
+      },
+      {
         "command": "reload",
         "description": "Startet das System neu",
         "type": "command"
@@ -14,7 +18,7 @@
         "commands": [
           {
             "command": "ip interface brief",
-            "description": "",
+            "description": "Zeigt das interface brief an",
             "type": "command"
           }
         ]
@@ -26,20 +30,13 @@
     "commands": [
       {
         "command": "reload",
-        "description": "Startet das System neu",
-        "type": "command"
+        "description": "write memory",
+        "type": "Speichert alle Einstellungen"
       },
       {
-        "command": "show",
-        "description": "Zeigt Informationen über das System an",
-        "type": "command",
-        "commands": [
-          {
-            "command": "ip interface brief",
-            "description": "",
-            "type": "command"
-          }
-        ]
+        "command": "privCommand",
+        "description": "irgendeine Beschreibung",
+        "type": "command"
       }
     ]
   }
