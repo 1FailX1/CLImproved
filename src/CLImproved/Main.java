@@ -17,37 +17,37 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        //Backend-Test-----------------------------------------------------------
+        //JsonFileHandler-Test-----------------------------------------------------------
         //loads json file
-        Backend.init();
-        System.out.println("getModes: " + Arrays.toString(Backend.getModes()));//get all modes for header buttons
-        System.out.println("getCommands" + Arrays.toString(Backend.getCommands()));
-        System.out.println("get Descriptions " + Arrays.toString(Backend.getDescriptions()));
+        JSONFileHandler.init("test.json");
+        System.out.println("getModes: " + Arrays.toString(JSONFileHandler.getModes()));//get all modes for header buttons
+        System.out.println("getCommands" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
 
         //simulating user input
         System.out.println("\nuser input (pressed \"show\" button)");
-        Backend.pressedButton(2);
-        System.out.println("getCommand" + Arrays.toString(Backend.getCommands()));
-        System.out.println("get Descriptions " + Arrays.toString(Backend.getDescriptions()));
+        JSONFileHandler.pressedButton(2);
+        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
 
         System.out.println("\n2nd user input");
-        Backend.pressedButton(1);
-        System.out.println("getCommand" + Arrays.toString(Backend.getCommands()));
-        System.out.println("get Descriptions " + Arrays.toString(Backend.getDescriptions()));
+        JSONFileHandler.pressedButton(1);
+        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
 
         //simulate mode change
         System.out.println("\nchange Mode");
-        Backend.changeMode(Backend.getModes()[1]);
-        System.out.println("getCommand" + Arrays.toString(Backend.getCommands()));
-        System.out.println("get Descriptions " + Arrays.toString(Backend.getDescriptions()));
+        JSONFileHandler.changeMode(JSONFileHandler.getModes()[1]);
+        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
         //------------------------------------------------------------------------
 
 
         int x = 15;
         stage.setTitle("CLImproved");
         stage.setResizable(false);
-        stage.setMinHeight(1280);
-        stage.setMinWidth(720);
+        stage.setHeight(720);
+        stage.setWidth(1280);
 
         //Main Layout
         BorderPane borderPane = new BorderPane();

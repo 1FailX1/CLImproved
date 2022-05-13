@@ -7,14 +7,14 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Backend {
-    static String jsonFile = "test.json";
+public class JSONFileHandler {
+    public static String jsonFile = "";
     private static JSONArray fileContent;
     private static JSONArray nextCommands;
-    public static String currentMode = "";
+    private static String currentMode = "";
 
-    public static void init() {
-        String resourceName = "input.json";
+    public static void init(String file) {
+        jsonFile = file;
         InputStream inputStream = null;
         try {
             inputStream = Files.newInputStream(Path.of(jsonFile));
