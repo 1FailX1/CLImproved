@@ -3,40 +3,67 @@
     "category": "user EXEC mode",
     "commands": [
       {
-        "command": "Test-command",
-        "type": "command"
+        "type": "command",
+        "command": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
       },
       {
+        "type": "command",
+        "command": "Test-command"
+      },
+      {
+        "type": "command",
         "command": "reload",
-        "description": "Startet das System neu",
-        "type": "command"
+        "description": "Startet das System neu"
       },
       {
+        "type": "command",
         "command": "show",
         "description": "Zeigt Informationen über das System an",
-        "type": "command",
         "commands": [
           {
+            "type": "command",
             "command": "ip interface brief",
-            "description": "Zeigt das interface brief an",
-            "type": "command"
+            "description": "Zeigt das interface brief an"
           }
         ]
       }
     ]
   },
   {
-    "category": "priviledged EXEC mode",
+    "category": "privileged EXEC mode",
     "commands": [
       {
-        "command": "reload",
-        "description": "write memory",
-        "type": "Speichert alle Einstellungen"
+        "type": "command",
+        "command": "exit",
+        "description": "Wechselt zurück in den user EXEC mode",
+        "jump": "user EXEC mode"
       },
       {
-        "command": "privCommand",
-        "description": "irgendeine Beschreibung",
-        "type": "command"
+        "type": "command",
+        "command": "reload",
+        "description": "startet das System neu"
+      },
+      {
+        "type": "command",
+        "command": "erase startup-config",
+        "description": "leert die Konfiguration die beim Starten des Gerätes geladen wird"
+      },
+      {
+        "type": "command",
+        "command": "write memory",
+        "description": "Speichert Einstellungen"
+      }
+    ]
+  },
+  {
+    "category": "global configuration",
+    "commands": [
+      {
+        "type": "command",
+        "command": "no ip domain lookup",
+        "description": "Deaktiviert die Funktion, dass bei einem nicht bekannten Befehl (z.B. bei einemTippfehler)ein Netzwerk mit dem Namen gesucht wird."
       }
     ]
   }

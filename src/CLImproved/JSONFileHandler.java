@@ -70,6 +70,11 @@ public class JSONFileHandler {
     }
 
     public static void pressedButton(int indexOfPressedCommand) {
+        try {
+            changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
+        } catch (Exception e) {
+            System.out.println("                  No jump!");
+        }
 
         try {
             nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("commands");
