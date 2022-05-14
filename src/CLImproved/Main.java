@@ -21,24 +21,27 @@ public class Main extends Application {
         //loads json file
         JSONFileHandler.init("test.json");
         System.out.println("getModes: " + Arrays.toString(JSONFileHandler.getModes()));//get all modes for header buttons
-        System.out.println("getCommands" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
 
         //simulating user input
         System.out.println("\nuser input (pressed \"show\" button)");
-        JSONFileHandler.pressedButton(2);
-        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        JSONFileHandler.pressedButton(3);
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
+        JSONFileHandler.pressedButton(0);
 
         System.out.println("\n2nd user input");
-        JSONFileHandler.pressedButton(1);
-        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        JSONFileHandler.pressedButton(0);
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
+        JSONFileHandler.pressedButton(0);
+        System.out.println("isParam: "+JSONFileHandler.isParam(0));
 
         //simulate mode change
         System.out.println("\nchange Mode");
         JSONFileHandler.changeMode(JSONFileHandler.getModes()[1]);
-        System.out.println("getCommand" + Arrays.toString(JSONFileHandler.getCommands()));
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
         //------------------------------------------------------------------------
 

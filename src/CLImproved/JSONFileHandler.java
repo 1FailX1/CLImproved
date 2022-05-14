@@ -42,17 +42,18 @@ public class JSONFileHandler {
     public static void changeMode(String mode) {
         for (int i = 0; i < fileContent.length(); i++) {
             if (fileContent.getJSONObject(i).get("category").equals(mode)) {
-                nextCommands = fileContent.getJSONObject(i).getJSONArray("commands");
+                nextCommands = fileContent.getJSONObject(i).getJSONArray("words");
                 currentMode = mode;
                 break;
             }
         }
     }
 
-    public static String[] getCommands() {
+    public static String[] getWords() {
         String[] commands = new String[nextCommands.length()];
         for (int i = 0; i < commands.length; i++) {
-            commands[i] = nextCommands.getJSONObject(i).getString("command");
+            commands[i] = nextCommands.getJSONObject(i).getString("word");
+
         }
         return commands;
     }
@@ -73,14 +74,28 @@ public class JSONFileHandler {
         try {
             changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
         } catch (Exception e) {
-            System.out.println("                  No jump!");
         }
 
         try {
-            nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("commands");
+            nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
         } catch (Exception e) {
             changeMode(currentMode);
+            System.out.println("Mögliche Ursachen für Error:\n" +
+                    "keine weiteren Befehle vorhanden: Text wird geschrieben und es werden die ersten befehle des modes geladen\n" +
+                    "Möglicherweise wird Nutzereingabe erwartet (wenn parameter)\n" +
+                    "fehlerhfate indexeingabe");
             //Command is written into the file
         }
+    }
+
+    public static boolean isParam(int indexOfPressedCommand) {
+        try {
+            if (nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words").getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
+                return true;
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
     }
 }

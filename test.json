@@ -1,30 +1,38 @@
 [
   {
     "category": "user EXEC mode",
-    "commands": [
+    "words": [
       {
         "type": "command",
-        "command": "enable",
+        "word": "ping",
+        "description": "bruh",
+        "words": [
+          {
+            "type": "param",
+            "word": "IP Adresse",
+            "description": "IP Adresse die gepingt werden soll"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "enable",
         "description": "Wechselt in den privileged EXEC mode",
         "jump": "privileged EXEC mode"
       },
       {
         "type": "command",
-        "command": "Test-command"
-      },
-      {
-        "type": "command",
-        "command": "reload",
+        "word": "reload",
         "description": "Startet das System neu"
       },
       {
         "type": "command",
-        "command": "show",
+        "word": "show",
         "description": "Zeigt Informationen über das System an",
-        "commands": [
+        "words": [
           {
             "type": "command",
-            "command": "ip interface brief",
+            "word": "ip interface brief",
             "description": "Zeigt das interface brief an"
           }
         ]
@@ -33,36 +41,36 @@
   },
   {
     "category": "privileged EXEC mode",
-    "commands": [
+    "words": [
       {
         "type": "command",
-        "command": "exit",
+        "word": "exit",
         "description": "Wechselt zurück in den user EXEC mode",
         "jump": "user EXEC mode"
       },
       {
         "type": "command",
-        "command": "reload",
+        "word": "reload",
         "description": "startet das System neu"
       },
       {
         "type": "command",
-        "command": "erase startup-config",
+        "word": "erase startup-config",
         "description": "leert die Konfiguration die beim Starten des Gerätes geladen wird"
       },
       {
         "type": "command",
-        "command": "write memory",
+        "word": "write memory",
         "description": "Speichert Einstellungen"
       }
     ]
   },
   {
     "category": "global configuration",
-    "commands": [
+    "words": [
       {
         "type": "command",
-        "command": "no ip domain lookup",
+        "word": "no ip domain lookup",
         "description": "Deaktiviert die Funktion, dass bei einem nicht bekannten Befehl (z.B. bei einemTippfehler)ein Netzwerk mit dem Namen gesucht wird."
       }
     ]
