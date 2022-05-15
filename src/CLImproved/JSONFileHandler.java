@@ -7,12 +7,21 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * @author Hunor Zakarias
+ * @version 1.0
+ */
 public class JSONFileHandler {
-    public static String jsonFile = "";
+    private static String jsonFile = "";
     private static JSONArray fileContent;
     private static JSONArray nextCommands;
     private static String currentMode = "";
 
+    /**
+     * <p>Methode lädt File ein und setzt intern wichtige Parameter</p>
+     *
+     * @param file JSONFile welches interpretiert werden soll
+     */
     public static void init(String file) {
         jsonFile = file;
         InputStream inputStream = null;
@@ -31,6 +40,9 @@ public class JSONFileHandler {
         }
     }
 
+    /**
+     * @return Liefert Array mit allen verfügbaren Modes
+     */
     public static String[] getModes() {
         String[] modes = new String[fileContent.length()];
         for (int i = 0; i < fileContent.length(); i++) {
@@ -39,6 +51,10 @@ public class JSONFileHandler {
         return modes;
     }
 
+    /**
+     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     * @param mode Mode zu dem geändert werden soll
+     */
     public static void changeMode(String mode) {
         for (int i = 0; i < fileContent.length(); i++) {
             if (fileContent.getJSONObject(i).get("category").equals(mode)) {
@@ -49,6 +65,10 @@ public class JSONFileHandler {
         }
     }
 
+    /**
+     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     * @return Liefert String-Array mit allen Wörtern
+     */
     public static String[] getWords() {
         String[] commands = new String[nextCommands.length()];
         for (int i = 0; i < commands.length; i++) {
@@ -58,6 +78,10 @@ public class JSONFileHandler {
         return commands;
     }
 
+    /**
+     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
+     */
     public static String[] getDescriptions() {
         String[] descriptions = new String[nextCommands.length()];
         for (int i = 0; i < descriptions.length; i++) {
@@ -70,6 +94,12 @@ public class JSONFileHandler {
         return descriptions;
     }
 
+    /**
+     * <p>Teilt der Klasse mit das ein Input getätigt wurde<br>
+     * Es werden interne Variablen geändert und die folgenden Unterbefehle geladen die
+     * mit dem getWords() Befehl bekommen werden können </p>
+     * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
+     */
     public static void pressedButton(int indexOfPressedCommand) {
         try {
             changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
@@ -88,9 +118,16 @@ public class JSONFileHandler {
         }
     }
 
+    /**
+     * <p>Überprüft ob ein gegebenes Wort ein Parameter ist</p>
+     * @param indexOfPressedCommand index des Wortes, das überprüft werden
+     *soll
+     * @return Wahrheitswert
+     */
     public static boolean isParam(int indexOfPressedCommand) {
         try {
-            if (nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words").getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
+            if (nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words")
+                    .getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
                 return true;
             }
         } catch (Exception e) {
