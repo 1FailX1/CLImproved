@@ -6,10 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -58,10 +55,12 @@ public class Main extends Application {
         hBox1.getChildren().add(topper_button);
 
         //CENTER
-        /*
+        VBox vBox1 = new VBox();
         GridPane[] gridPane = new GridPane[modes.length];
         Label[] modeNames   = new Label[modes.length];
         for(int e = 0; e < modes.length; e++) {
+            gridPane[e] = new GridPane();
+            JSONFileHandler.changeMode(modes[e]);
             modeNames[e] = new Label(modes[e]);
             gridPane[e].setHgap(50);
             for (int i = 0; i < commands.length; i++) {
@@ -70,18 +69,17 @@ public class Main extends Application {
                 gridPane[e].add(button1, 0, i);
                 gridPane[e].add(new Label(descriptions[i]), 1, i);
             }
-            JSONFileHandler.changeMode();
+            vBox1.getChildren().add(modeNames[e]);
+            vBox1.getChildren().add(gridPane[e]);
             modes        =        JSONFileHandler.getModes();
             commands     =        JSONFileHandler.getWords();
             descriptions = JSONFileHandler.getDescriptions();
         }
-        */
 
-        //LOOP THROUGH ALL MODES AND LIST THEM WITH FORMAT modeNames[x] and then gridPane[x]
 
         //Adding to Layouts
         borderPane.setTop(hBox1);
-        //borderPane.setCenter(gridPane[0]); //UNFINISHED
+        borderPane.setCenter(vBox1);
         stage.show();
     }
     static public void testingFunctions(){
