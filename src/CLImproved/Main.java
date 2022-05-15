@@ -54,7 +54,7 @@ public class Main extends Application {
         topper_button.setMaxHeight(MAX_VALUE);
         hBox1.getChildren().add(topper_button);
 
-        //CENTER
+        //CENTERR
         VBox vBox1 = new VBox();
         GridPane[] gridPane = new GridPane[modes.length];
         Label[] modeNames   = new Label[modes.length];
