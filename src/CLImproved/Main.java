@@ -8,15 +8,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Integer.MAX_VALUE;
 
 
 public class Main extends Application {
-    //test
     public static void main(String[] args) {
         //testingFunctions();
         launch(args);
