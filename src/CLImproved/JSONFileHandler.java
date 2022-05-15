@@ -53,6 +53,7 @@ public class JSONFileHandler {
 
     /**
      * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     *
      * @param mode Mode zu dem geändert werden soll
      */
     public static void changeMode(String mode) {
@@ -65,8 +66,15 @@ public class JSONFileHandler {
         }
     }
 
+    public static void changeMode(int index) {
+        nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
+        currentMode = getModes()[index];
+
+    }
+
     /**
      * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     *
      * @return Liefert String-Array mit allen Wörtern
      */
     public static String[] getWords() {
@@ -80,6 +88,7 @@ public class JSONFileHandler {
 
     /**
      * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
+     *
      * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
      */
     public static String[] getDescriptions() {
@@ -98,6 +107,7 @@ public class JSONFileHandler {
      * <p>Teilt der Klasse mit das ein Input getätigt wurde<br>
      * Es werden interne Variablen geändert und die folgenden Unterbefehle geladen die
      * mit dem getWords() Befehl bekommen werden können </p>
+     *
      * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
      */
     public static void pressedButton(int indexOfPressedCommand) {
@@ -120,8 +130,9 @@ public class JSONFileHandler {
 
     /**
      * <p>Überprüft ob ein gegebenes Wort ein Parameter ist</p>
+     *
      * @param indexOfPressedCommand index des Wortes, das überprüft werden
-     *soll
+     *                              soll
      * @return Wahrheitswert
      */
     public static boolean isParam(int indexOfPressedCommand) {
