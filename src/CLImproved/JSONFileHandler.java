@@ -19,7 +19,6 @@ public class JSONFileHandler {
 
     /**
      * <p>Methode lädt File ein und setzt intern wichtige Parameter</p>
-     *
      * @param file JSONFile welches interpretiert werden soll
      */
     public static void init(String file) {
@@ -125,6 +124,7 @@ public class JSONFileHandler {
                     "Möglicherweise wird Nutzereingabe erwartet (wenn parameter)\n" +
                     "fehlerhfate indexeingabe");
             //Command is written into the file
+
         }
     }
 
