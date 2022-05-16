@@ -6,8 +6,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
 import java.util.Arrays;
 
 import static java.lang.Integer.MAX_VALUE;
@@ -41,7 +46,14 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane, 1280, 820);
         stage.setScene(scene);
 
-        //TOPPER
+        //HEADER
+        ImageView imageView1 = new ImageView();
+        try{
+            imageView1 = new ImageView(new Image(new FileInputStream("C:\\Users\\1feli\\OneDrive - HTL Wien 3 Rennweg\\Projects\\CLImproved\\assets\\CLImproved_Logo.png")));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         HBox hBox1 = new HBox();
         hBox1.setPrefHeight(100);
         hBox1.setPrefWidth(MAX_VALUE);
@@ -49,34 +61,41 @@ public class Main extends Application {
         Button topper_button = new Button("AMONG US");
         topper_button.setPrefWidth(MAX_VALUE);
         topper_button.setMaxHeight(MAX_VALUE);
-        hBox1.getChildren().add(topper_button);
 
-        //CENTERR
+        hBox1.getChildren().addAll(imageView1, topper_button);
+
+        //CENTER
+        ScrollPane scrollPane1 = new ScrollPane();
         VBox vBox1 = new VBox();
         GridPane[] gridPane = new GridPane[modes.length];
         Label[] modeNames   = new Label[modes.length];
         for(int e = 0; e < modes.length; e++) {
-            gridPane[e] = new GridPane();
             JSONFileHandler.changeMode(modes[e]);
-            modeNames[e] = new Label(modes[e]);
-            gridPane[e].setHgap(50);
-            for (int i = 0; i < commands.length; i++) {
-                Button button1 = new Button(commands[i]);
-                button1.setPrefWidth(60);
-                gridPane[e].add(button1, 0, i);
-                gridPane[e].add(new Label(descriptions[i]), 1, i);
-            }
-            vBox1.getChildren().add(modeNames[e]);
-            vBox1.getChildren().add(gridPane[e]);
             modes        =        JSONFileHandler.getModes();
             commands     =        JSONFileHandler.getWords();
             descriptions = JSONFileHandler.getDescriptions();
-        }
+            gridPane[e] = new GridPane();
+            modeNames[e] = new Label(modes[e]);
+            gridPane[e].setHgap(50);
+            for (int i = 0; i < commands.length; i++) {
+                Button button1 = new Button("Add");
+                Label label1 = new Label(commands[i]);
+                button1.setPrefWidth(40);
+                label1.setPrefWidth(60);
+                gridPane[e].add(button1, 0, i);
+                gridPane[e].add(label1, 1, i);
+                gridPane[e].add(new Label(descriptions[i]), 2, i);
 
+            }
+            vBox1.getChildren().add(modeNames[e]);
+            vBox1.getChildren().add(gridPane[e]);
+            System.out.println(e);
+        }
+        scrollPane1.setContent(vBox1);
 
         //Adding to Layouts
         borderPane.setTop(hBox1);
-        borderPane.setCenter(vBox1);
+        borderPane.setCenter(scrollPane1);
         stage.show();
     }
     static public void testingFunctions(){

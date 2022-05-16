@@ -22,6 +22,54 @@
       },
       {
         "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den privileged EXEC mode",
+        "jump": "privileged EXEC mode"
+      },
+      {
+        "type": "command",
         "word": "reload",
         "description": "Startet das System neu"
       },
