@@ -72,6 +72,32 @@
         "type": "command",
         "word": "no ip domain lookup",
         "description": "Deaktiviert die Funktion, dass bei einem nicht bekannten Befehl (z.B. bei einemTippfehler)ein Netzwerk mit dem Namen gesucht wird."
+      },
+      {
+        "type": "command",
+        "word": "service password-encryption",
+        "description": "Speichert das Passwort verschlüsselt"
+      },
+      {
+        "type": "command",
+        "word": "hostname",
+        "description": "Setzt den Namen des Netzwerkgerätes",
+        "words": [
+          {
+            "type": "param",
+            "word": "Name"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "banner motd",
+        "words": [
+          {
+            "type": "param",
+            "word": "command"
+          }
+        ]
       }
     ]
   }
