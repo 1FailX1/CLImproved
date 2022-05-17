@@ -49,7 +49,7 @@ public class Main extends Application {
         //HEADER
         ImageView imageView1 = new ImageView();
         try{
-            imageView1 = new ImageView(new Image(new FileInputStream("C:\\Users\\1feli\\OneDrive - HTL Wien 3 Rennweg\\Projects\\CLImproved\\assets\\CLImproved_Logo.png")));
+            imageView1 = new ImageView(new Image(new FileInputStream("assets\\CLImproved_Logo.png")));
         }catch (Exception e){
             e.printStackTrace();
         }
