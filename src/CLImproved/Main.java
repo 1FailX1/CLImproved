@@ -1,7 +1,6 @@
 package CLImproved;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -32,9 +34,9 @@ public class Main extends Application {
         System.out.println(Arrays.toString(JSONFileHandler.getDescriptions()));
 
         //-----
-        String[] modes        =        JSONFileHandler.getModes();
-        String[] commands     =        JSONFileHandler.getWords();
-        String[] descriptions = JSONFileHandler.getDescriptions();
+        String[] modes = JSONFileHandler.getModes();
+        final String[][] commands = {JSONFileHandler.getWords()}; //Using inner classes requires a final / effectively final one element array (like this one)
+        final String[][] descriptions = {JSONFileHandler.getDescriptions()};
 
         stage.setTitle("CLImproved");
         stage.setResizable(false);
@@ -48,9 +50,9 @@ public class Main extends Application {
 
         //HEADER
         ImageView imageView1 = new ImageView();
-        try{
+        try {
             imageView1 = new ImageView(new Image(new FileInputStream("assets\\CLImproved_Logo.png")));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -58,39 +60,55 @@ public class Main extends Application {
         hBox1.setPrefHeight(100);
         hBox1.setPrefWidth(MAX_VALUE);
         hBox1.setAlignment(Pos.CENTER);
-        Button topper_button = new Button("AMONG US");
-        topper_button.setPrefWidth(MAX_VALUE);
-        topper_button.setMaxHeight(MAX_VALUE);
+        hBox1.getChildren().add(imageView1);
+        for (int i = 0; i < modes.length; i++) {
+            Button modeButton = new Button(modes[i]);
+            String[] finalModes = modes;
+            int finalI = i;
+            modeButton.setOnAction(actionEvent -> {
+                JSONFileHandler.changeMode(finalModes[finalI]);
+                ScrollPane scrollPane1 = new ScrollPane();
+                VBox vBox1 = new VBox();
+                GridPane gridPane = new GridPane();
+                commands[0] = JSONFileHandler.getWords();
+                descriptions[0] = JSONFileHandler.getDescriptions();
+                gridPane.setHgap(50);
+                for (int i1 = 0; i1 < commands[0].length; i1++) {
+                    Button button1 = new Button("Add");
+                    Label label1 = new Label(commands[0][i1]);
+                    button1.setPrefWidth(40);
+                    label1.setPrefWidth(60);
+                    gridPane.add(button1, 0, i1);
+                    gridPane.add(label1, 1, i1);
+                    gridPane.add(new Label(descriptions[0][i1]), 2, i1);
 
-        hBox1.getChildren().addAll(imageView1, topper_button);
+                }
+                vBox1.getChildren().add(gridPane);
+                scrollPane1.setContent(vBox1);
+                borderPane.setCenter(scrollPane1);
+            });
+            hBox1.getChildren().add(modeButton);
+        }
 
         //CENTER
         ScrollPane scrollPane1 = new ScrollPane();
         VBox vBox1 = new VBox();
-        GridPane[] gridPane = new GridPane[modes.length];
-        Label[] modeNames   = new Label[modes.length];
-        for(int e = 0; e < modes.length; e++) {
-            JSONFileHandler.changeMode(modes[e]);
-            modes        =        JSONFileHandler.getModes();
-            commands     =        JSONFileHandler.getWords();
-            descriptions = JSONFileHandler.getDescriptions();
-            gridPane[e] = new GridPane();
-            modeNames[e] = new Label(modes[e]);
-            gridPane[e].setHgap(50);
-            for (int i = 0; i < commands.length; i++) {
-                Button button1 = new Button("Add");
-                Label label1 = new Label(commands[i]);
-                button1.setPrefWidth(40);
-                label1.setPrefWidth(60);
-                gridPane[e].add(button1, 0, i);
-                gridPane[e].add(label1, 1, i);
-                gridPane[e].add(new Label(descriptions[i]), 2, i);
+        GridPane gridPane = new GridPane();
+        commands[0] = JSONFileHandler.getWords();
+        descriptions[0] = JSONFileHandler.getDescriptions();
+        gridPane.setHgap(50);
+        for (int i = 0; i < commands[0].length; i++) {
+            Button button1 = new Button("Add");
+            Label label1 = new Label(commands[0][i]);
+            button1.setPrefWidth(40);
+            label1.setPrefWidth(60);
+            gridPane.add(button1, 0, i);
+            gridPane.add(label1, 1, i);
+            gridPane.add(new Label(descriptions[0][i]), 2, i);
 
-            }
-            vBox1.getChildren().add(modeNames[e]);
-            vBox1.getChildren().add(gridPane[e]);
-            System.out.println(e);
         }
+        vBox1.getChildren().add(gridPane);
+
         scrollPane1.setContent(vBox1);
 
         //Adding to Layouts
