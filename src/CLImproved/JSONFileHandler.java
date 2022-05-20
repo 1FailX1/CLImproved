@@ -15,11 +15,14 @@ public class JSONFileHandler {
     private static String jsonFile = "";
     private static JSONArray fileContent;
     private static JSONArray nextCommands;
+    private static JSONArray multipleCommands;
     private static String currentMode = "";
+    private static int lengthOfCommands = 0;
+    private static int currentCommand = 0;
+    private static boolean hasMultiple = false;
 
     /**
-     * <p>Methode lädt File ein und setzt intern wichtige Parameter</p>
-     * @param file JSONFile welches interpretiert werden soll
+     * @param file JSONfile that should be interpreted
      */
     public static void init(String file) {
         jsonFile = file;
@@ -40,7 +43,7 @@ public class JSONFileHandler {
     }
 
     /**
-     * @return Liefert Array mit allen verfügbaren Modes
+     * @return returns array with all available modes
      */
     public static String[] getModes() {
         String[] modes = new String[fileContent.length()];
@@ -51,9 +54,7 @@ public class JSONFileHandler {
     }
 
     /**
-     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
-     *
-     * @param mode Mode zu dem geändert werden soll
+     * @param mode changes the mode to mode
      */
     public static void changeMode(String mode) {
         for (int i = 0; i < fileContent.length(); i++) {
@@ -72,9 +73,7 @@ public class JSONFileHandler {
     }
 
     /**
-     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
-     *
-     * @return Liefert String-Array mit allen Wörtern
+     * @return array with all currently available words
      */
     public static String[] getWords() {
         String[] commands = new String[nextCommands.length()];
@@ -86,9 +85,7 @@ public class JSONFileHandler {
     }
 
     /**
-     * <p>Ändert den Mode und alle intern beeinflusten Parameter</p>
-     *
-     * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
+     * @return a string array with all descriptions of the current words in the correct order
      */
     public static String[] getDescriptions() {
         String[] descriptions = new String[nextCommands.length()];
@@ -103,37 +100,55 @@ public class JSONFileHandler {
     }
 
     /**
-     * <p>Teilt der Klasse mit das ein Input getätigt wurde<br>
-     * Es werden interne Variablen geändert und die folgenden Unterbefehle geladen die
-     * mit dem getWords() Befehl bekommen werden können </p>
-     *
-     * @return Liefert String-Array mit allen Beschreibungen in der richtigen Wörtern zu den Wärtern
+     * <p>loads in next words which can be accessed by the getWords() method</p>
      */
-    public static void pressedButton(int indexOfPressedCommand) {
-        try {
-            changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
-        } catch (Exception e) {
-        }
+    public static void loadNextWords(int indexOfPressedCommand) {
+        if (lengthOfCommands != 0 && currentCommand < lengthOfCommands) {
+            try {
+                nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+            } catch (Exception e) {
+                currentCommand++;
+                nextCommands = multipleCommands.getJSONArray(currentCommand);
+                System.out.println(nextCommands);
+            }
+        } else {
+            lengthOfCommands = 0;
+            currentCommand = 0;
+            try {
+                changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
+            } catch (Exception e) {
+            }
 
-        try {
-            nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-        } catch (Exception e) {
-            changeMode(currentMode);
-            System.out.println("Mögliche Ursachen für Error:\n" +
-                    "keine weiteren Befehle vorhanden: Text wird geschrieben und es werden die ersten befehle des modes geladen\n" +
-                    "Möglicherweise wird Nutzereingabe erwartet (wenn parameter)\n" +
-                    "fehlerhfate indexeingabe");
-            //Command is written into the file
 
+            try {
+                //tries to interpret "words" array as array with 2 dimensions
+                multipleCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                multipleCommands.getJSONArray(0);//checks if words is 2 dimensional array,
+                // if not exception is thorwn and code bellow is not executed
+
+                nextCommands = multipleCommands.getJSONArray(currentCommand);
+                lengthOfCommands = nextCommands.length();
+                hasMultiple = true;
+
+            } catch (Exception e) {
+
+                try {
+                    //if exception is thrown try to interpret "words" array as 1 dimensional array
+                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                } catch (Exception f) {
+                    //if non of the above interpretations worked there is
+                    // no "words" array and the first commands are loaded
+                    changeMode(currentMode);
+                }
+            }
         }
     }
 
     /**
-     * <p>Überprüft ob ein gegebenes Wort ein Parameter ist</p>
+     * <p>checks if a word is a parameter</p>
      *
-     * @param indexOfPressedCommand index des Wortes, das überprüft werden
-     *                              soll
-     * @return Wahrheitswert
+     * @param indexOfPressedCommand index of the word which should be checked
+     * @return the boolean value
      */
     public static boolean isParam(int indexOfPressedCommand) {
         try {

@@ -1,188 +1,235 @@
-[{
-        "category": "user EXEC mode",
-        "words": [{
-            "type": "command",
-            "word": "show",
-            "description": "bruh",
-            "words": [
-                [{
-                    "type": "command",
-                    "word": "interface"
-                }],
-                [{
-                    "type": "optCommand",
-                    "word": "| include",
-                    "words": [{
-                        "type": "param",
-                        "word": "String"
-                    }]
-                }]
-            ]
-        }]
-    },
-    {
-        "category": "privileged EXEC mode",
-        "words": [{
-                "type": "command",
-                "word": "disable",
-                "description": " Wechselt in den user EXEC mode",
-                "jump": "user EXEC mode"
-            },
-            {
-                "type": "command",
-                "word": "copy",
-                "words": [{
-                        "type": "command",
-                        "word": "flash",
-                        "words": [{
-                                "type": "command",
-                                "word": "ftp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "running-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "scp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "startup-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "tftp"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "command",
-                        "word": "ftp",
-                        "words": [{
-                                "type": "command",
-                                "word": "flash"
-                            },
-                            {
-                                "type": "command",
-                                "word": "running-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "scp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "startup-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "tftp"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "command",
-                        "word": "running-config",
-                        "words": [{
-                                "type": "command",
-                                "word": "flash"
-                            },
-                            {
-                                "type": "command",
-                                "word": "ftp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "scp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "startup-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "tftp"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "command",
-                        "word": "scp",
-                        "words": [{
-                                "type": "command",
-                                "word": "flash"
-                            },
-                            {
-                                "type": "command",
-                                "word": "ftp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "running-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "startup-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "tftp"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "command",
-                        "word": "startup-config",
-                        "words": [{
-                                "type": "command",
-                                "word": "flash"
-                            },
-                            {
-                                "type": "command",
-                                "word": "ftp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "running-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "scp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "tftp"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "command",
-                        "word": "tftp",
-                        "words": [{
-                                "type": "command",
-                                "word": "flash"
-                            },
-                            {
-                                "type": "command",
-                                "word": "ftp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "running-config"
-                            },
-                            {
-                                "type": "command",
-                                "word": "scp"
-                            },
-                            {
-                                "type": "command",
-                                "word": "startup-config"
-                            }
-                        ]
-                    }
-                ]
-            }
+[
+  {
+    "category": "user EXEC mode",
+    "words": [
+      {
+        "type": "command",
+        "word": "enable",
+        "description": "Wechselt in den priviledged EXEC mode und fragt möglicherweise ein Passwort ab"
+      },
+      {
+        "type": "command",
+        "word": "reload",
+        "description": "Startet das System neu"
+      },
+      {
+        "type": "command",
+        "word": "ping",
+        "words": [
+          {
+            "type": "param",
+            "word": "ping"
+          }
         ]
-    }
+      }
+    ]
+  },
+  {
+    "category": "privileged EXEC mode",
+    "words": [
+      {
+        "type": "command",
+        "word": "show",
+        "description": "bruh",
+        "words": [
+          [
+            {
+              "type": "command",
+              "word": "interface"
+            }
+          ],
+          [
+            {
+              "type": "optCommand",
+              "word": "| include",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "String"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "type": "command",
+        "word": "disable",
+        "description": " Wechselt in den user EXEC mode",
+        "jump": "user EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "write memory",
+        "description": "Speichert alle Einstellungen"
+      },
+      {
+        "type": "command",
+        "word": "erase startup-config",
+        "description": "Setzt alle Einstellungen zurück"
+      },
+      {
+        "type": "command",
+        "word": "copy",
+        "words": [
+          {
+            "type": "command",
+            "word": "flash",
+            "words": [
+              {
+                "type": "command",
+                "word": "ftp"
+              },
+              {
+                "type": "command",
+                "word": "running-config"
+              },
+              {
+                "type": "command",
+                "word": "scp"
+              },
+              {
+                "type": "command",
+                "word": "startup-config"
+              },
+              {
+                "type": "command",
+                "word": "tftp"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "ftp",
+            "words": [
+              {
+                "type": "command",
+                "word": "flash"
+              },
+              {
+                "type": "command",
+                "word": "running-config"
+              },
+              {
+                "type": "command",
+                "word": "scp"
+              },
+              {
+                "type": "command",
+                "word": "startup-config"
+              },
+              {
+                "type": "command",
+                "word": "tftp"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "running-config",
+            "words": [
+              {
+                "type": "command",
+                "word": "flash"
+              },
+              {
+                "type": "command",
+                "word": "ftp"
+              },
+              {
+                "type": "command",
+                "word": "scp"
+              },
+              {
+                "type": "command",
+                "word": "startup-config"
+              },
+              {
+                "type": "command",
+                "word": "tftp"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "scp",
+            "words": [
+              {
+                "type": "command",
+                "word": "flash"
+              },
+              {
+                "type": "command",
+                "word": "ftp"
+              },
+              {
+                "type": "command",
+                "word": "running-config"
+              },
+              {
+                "type": "command",
+                "word": "startup-config"
+              },
+              {
+                "type": "command",
+                "word": "tftp"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "startup-config",
+            "words": [
+              {
+                "type": "command",
+                "word": "flash"
+              },
+              {
+                "type": "command",
+                "word": "ftp"
+              },
+              {
+                "type": "command",
+                "word": "running-config"
+              },
+              {
+                "type": "command",
+                "word": "scp"
+              },
+              {
+                "type": "command",
+                "word": "tftp"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "tftp",
+            "words": [
+              {
+                "type": "command",
+                "word": "flash"
+              },
+              {
+                "type": "command",
+                "word": "ftp"
+              },
+              {
+                "type": "command",
+                "word": "running-config"
+              },
+              {
+                "type": "command",
+                "word": "scp"
+              },
+              {
+                "type": "command",
+                "word": "startup-config"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ]

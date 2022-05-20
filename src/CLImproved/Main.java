@@ -29,7 +29,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        JSONFileHandler.init("test.json");
+
+        JSONFileHandler.init("prototyp2.json");
         System.out.println(Arrays.toString(JSONFileHandler.getWords()));
         System.out.println(Arrays.toString(JSONFileHandler.getDescriptions()));
 
@@ -66,7 +67,7 @@ public class Main extends Application {
             String[] finalModes = modes;
             int finalI = i;
             modeButton.setOnAction(actionEvent -> {
-                JSONFileHandler.changeMode(finalModes[finalI]);
+                JSONFileHandler.changeMode(finalI);
                 ScrollPane scrollPane1 = new ScrollPane();
                 VBox vBox1 = new VBox();
                 GridPane gridPane = new GridPane();
@@ -119,14 +120,22 @@ public class Main extends Application {
     static public void testingFunctions(){
         //JsonFileHandler-Test-----------------------------------------------------------
         //loads json file
-        JSONFileHandler.init("test.json");
+        JSONFileHandler.init("prototyp2.json");
+        JSONFileHandler.changeMode(1);
         System.out.println("getModes: " + Arrays.toString(JSONFileHandler.getModes()));//get all modes for header buttons
         System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
 
         //simulating user input
-        System.out.println("\nuser input (pressed \"show\" button)");
-        JSONFileHandler.pressedButton(3);
+        JSONFileHandler.loadNextWords(2);
+        JSONFileHandler.loadNextWords(0);
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
+        JSONFileHandler.loadNextWords(0);
+        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
+        JSONFileHandler.loadNextWords(0);
+        JSONFileHandler.loadNextWords(0);
+        JSONFileHandler.loadNextWords(0);
+        /*
         System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
         System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
         JSONFileHandler.pressedButton(0);
@@ -142,6 +151,7 @@ public class Main extends Application {
         System.out.println("\nchange Mode");
         JSONFileHandler.changeMode(JSONFileHandler.getModes()[1]);
         System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
+        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));*/
+        System.out.println("----------------------------------------------------------------------------------------");
     }
 }
