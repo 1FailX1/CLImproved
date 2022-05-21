@@ -35,7 +35,57 @@
           [
             {
               "type": "command",
-              "word": "interface"
+              "word": "clock",
+              "words": [
+                {
+                  "type": "optCommand",
+                  "word": "detail"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "interfaces"
+            },
+            {
+              "type": "command",
+              "word": "ip",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "interface",
+                  "words": [
+                    {
+                      "type": "optCommand",
+                      "word": "brief"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "route"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "ipv6",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "interface",
+                  "words": [
+                    {
+                      "type": "optCommand",
+                      "word": "brief"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "route"
+                }
+              ]
             }
           ],
           [
@@ -48,8 +98,72 @@
                   "word": "String"
                 }
               ]
+            },
+            {
+              "type": "optCommand",
+              "word": "| exclude",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "String"
+                }
+              ]
+            },
+            {
+              "type": "optCommand",
+              "word": "| begin",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "String"
+                }
+              ]
             }
           ]
+        ]
+      },
+      {
+        "type": "command",
+        "word": "clock set",
+        "words": [
+          {
+            "type": "param",
+            "word": "hh:mm:ss",
+            "words": [
+              {
+                "type": "param",
+                "word": "1-31",
+                "words": [
+                  {
+                    "type": "param",
+                    "word": "MONTH",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "year"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "param",
+                "word": "MONTH",
+                "words": [
+                  {
+                    "type": "param",
+                    "word": "1-31",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "year"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -227,6 +341,67 @@
                 "word": "startup-config"
               }
             ]
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "delete",
+        "words": [
+          {
+            "type": "param",
+            "word": "WORD"
+          },
+          {
+            "type": "command",
+            "word": "flash"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "global config mode",
+    "words": [
+      {
+        "type": "command",
+        "word": "hostname",
+        "words": [
+          {
+            "type": "param",
+            "word": "name"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "enable",
+        "words": [
+          [
+            {
+              "type": "command",
+              "word": "password"
+            },
+            {
+              "type": "command",
+              "word": "secret"
+            }
+          ],
+          [
+            {
+              "type": "param",
+              "word": "password"
+            }
+          ]
+        ]
+      },
+      {
+        "type": "command",
+        "word": "domain-name",
+        "words": [
+          {
+            "type": "param",
+            "word": "name"
           }
         ]
       }
