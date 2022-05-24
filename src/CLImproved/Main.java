@@ -115,6 +115,7 @@ public class Main extends Application {
         //Adding to Layouts
         borderPane.setTop(hBox1);
         borderPane.setCenter(scrollPane1);
+        stage.getIcons().add(imageView1.getImage());
         stage.show();
     }
     static public void testingFunctions(){
