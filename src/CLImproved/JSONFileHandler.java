@@ -1,6 +1,7 @@
 package CLImproved;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,7 +99,7 @@ public class JSONFileHandler {
         }
         return descriptions;
     }
-
+    //
     /**
      * <p>loads in next words which can be accessed by the getWords() method</p>
      */
