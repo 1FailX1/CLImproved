@@ -43,6 +43,7 @@ public class JSONFileHandler {
 
         JSONTokener tokener = new JSONTokener(inputStream);
         fileContent = new JSONArray(tokener);
+        currentMode.push(fileContent.getJSONObject(0));
         try {
             changeMode(fileContent.getJSONObject(0).getString("category"));
         } catch (Exception e) {
@@ -123,6 +124,7 @@ public class JSONFileHandler {
 
                 case "multiCommand":
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    System.out.println(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     hasMultiple = true;
                     currentMultiCommand = 0;
                     multipleCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
@@ -130,14 +132,23 @@ public class JSONFileHandler {
                     break;
 
                 case "enterSubMode":
+                    CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    CommandWriter.makeBreak();
+                    CommandWriter.addTab();
                     currentMode.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
                     isInSubMode = true;
                     nextCommands = currentMode.peek().getJSONArray("words");
+
+
                     break;
                 case "exitSubMode":
+                    CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    CommandWriter.makeBreak();
+                    CommandWriter.removeTab();
                     currentMode.pop();
                     nextCommands = currentMode.peek().getJSONArray("words");
-                    if(currentMode.capacity() <2){
+
+                    if (currentMode.capacity() < 2) {
                         isInSubMode = false;
                     }
                     break;
@@ -147,33 +158,19 @@ public class JSONFileHandler {
                     nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
                     break;
             }
-
-            System.out.println(CommandWriter.content);
-
-
         } catch (JSONException e) {
             System.out.println("no more next commands");
             if (hasMultiple && currentMultiCommand < multipleCommands.length() - 1) {
                 currentMultiCommand++;
                 nextCommands = multipleCommands.getJSONArray(currentMultiCommand);
             } else {
-                    nextCommands = currentMode.peek().getJSONArray("words");
-
+                nextCommands = currentMode.peek().getJSONArray("words");
                 hasMultiple = false;
                 CommandWriter.makeBreak();
-
             }
-            System.out.println(CommandWriter.content);
+
         }
-
-
-
-
-
-
-
-
-
+        System.out.println(CommandWriter.content);
       /*  if (lengthOfCommands != 0 && currentCommand < lengthOfCommands) {
             try {
                 nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");

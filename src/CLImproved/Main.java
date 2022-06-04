@@ -164,13 +164,13 @@ public class Main extends Application {
     }
 
     public void printCurrentCommands() {
-        System.out.println(Arrays.toString(loaded_commands));
+       // System.out.println(Arrays.toString(loaded_commands));
         for (int i1 = 0; i1 < loaded_commands.length; i1++) {
             int finalI_commands = i1;
             Button button1 = new Button("Add");
             button1.setFocusTraversable(false);
             button1.setOnAction(actionEvent2 -> {
-                System.out.println("Button egdrückt");
+            //    System.out.println("Button egdrückt");
                         /*
                         if(JSONFileHandler.isParam(finalI)){
                             System.out.println("Is parameter");
