@@ -29,7 +29,63 @@
     "category": "privileged EXEC mode",
     "words": [
       {
-        "type": "command",
+        "type": "enterSubMode",
+        "word": "configure terminal",
+        "description": "Wechselt in den global config mode",
+        "submode": {
+          "category": "global config mode",
+          "words": [
+            {
+              "type": "command",
+              "word": "hostname",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "name"
+                }
+              ]
+            },
+            {
+              "type": "multiCommand",
+              "word": "enable",
+              "words": [
+                [
+                  {
+                    "type": "command",
+                    "word": "password"
+                  },
+                  {
+                    "type": "command",
+                    "word": "secret"
+                  }
+                ],
+                [
+                  {
+                    "type": "param",
+                    "word": "password"
+                  }
+                ]
+              ]
+            },
+            {
+              "type": "command",
+              "word": "domain-name",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "name"
+                }
+              ]
+            },
+            {
+              "type": "exitSubMode",
+              "word": "exit"
+            }
+          ]
+        }
+      },
+      {
+        "type": "multiCommand",
         "word": "show",
         "description": "bruh",
         "words": [
@@ -356,53 +412,6 @@
           {
             "type": "command",
             "word": "flash"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "category": "global config mode",
-    "words": [
-      {
-        "type": "command",
-        "word": "hostname",
-        "words": [
-          {
-            "type": "param",
-            "word": "name"
-          }
-        ]
-      },
-      {
-        "type": "command",
-        "word": "enable",
-        "words": [
-          [
-            {
-              "type": "command",
-              "word": "password"
-            },
-            {
-              "type": "command",
-              "word": "secret"
-            }
-          ],
-          [
-            {
-              "type": "param",
-              "word": "password"
-            }
-          ]
-        ]
-      },
-      {
-        "type": "command",
-        "word": "domain-name",
-        "words": [
-          {
-            "type": "param",
-            "word": "name"
           }
         ]
       }

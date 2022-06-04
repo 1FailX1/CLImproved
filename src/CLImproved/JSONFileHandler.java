@@ -1,35 +1,42 @@
 package CLImproved;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * @author Hunor Zakarias
  * @version 1.0
  */
 public class JSONFileHandler {
-    private static String jsonFile = "";
     private static JSONArray fileContent;
+
+    private static Stack<JSONObject> currentMode = new Stack<>();
+    private static String currentModeString = "";
+    private static boolean isInSubMode = false;
+
+    private static int lengthOfCommands = 0;
+    private static int currentMultiCommand = 0;
+    private static boolean hasMultiple = false;
+
     private static JSONArray nextCommands;
     private static JSONArray multipleCommands;
-    private static String currentMode = "";
-    private static int lengthOfCommands = 0;
-    private static int currentCommand = 0;
-    private static boolean hasMultiple = false;
 
     /**
      * @param file JSONfile that should be interpreted
      */
     public static void init(String file) {
-        jsonFile = file;
         InputStream inputStream = null;
         try {
-            inputStream = Files.newInputStream(Path.of(jsonFile));
+            inputStream = Files.newInputStream(Path.of(file));
         } catch (IOException e) {
             System.out.println("File konnte nicht gelesen weden");
         }
@@ -61,7 +68,7 @@ public class JSONFileHandler {
         for (int i = 0; i < fileContent.length(); i++) {
             if (fileContent.getJSONObject(i).get("category").equals(mode)) {
                 nextCommands = fileContent.getJSONObject(i).getJSONArray("words");
-                currentMode = mode;
+                currentModeString = mode;
                 break;
             }
         }
@@ -69,7 +76,9 @@ public class JSONFileHandler {
 
     public static void changeMode(int index) {
         nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
-        currentMode = getModes()[index];
+        currentModeString = getModes()[index];
+        currentMode.clear();
+        currentMode.push(fileContent.getJSONObject(index));
 
     }
 
@@ -99,12 +108,73 @@ public class JSONFileHandler {
         }
         return descriptions;
     }
-    //
+
     /**
-     * <p>loads in next words which can be accessed by the getWords() method</p>
+     * <p>loads next words which can be accessed by the getWords() method</p>
      */
     public static void loadNextWords(int indexOfPressedCommand) {
-        if (lengthOfCommands != 0 && currentCommand < lengthOfCommands) {
+        try {
+            switch (nextCommands.getJSONObject(indexOfPressedCommand).getString("type")) {
+                case "optCommand":
+                case "command":
+                    CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                    break;
+
+                case "multiCommand":
+                    CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    hasMultiple = true;
+                    currentMultiCommand = 0;
+                    multipleCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                    nextCommands = multipleCommands.getJSONArray(currentMultiCommand);
+                    break;
+
+                case "enterSubMode":
+                    currentMode.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
+                    isInSubMode = true;
+                    nextCommands = currentMode.peek().getJSONArray("words");
+                    break;
+                case "exitSubMode":
+                    currentMode.pop();
+                    nextCommands = currentMode.peek().getJSONArray("words");
+                    if(currentMode.capacity() <2){
+                        isInSubMode = false;
+                    }
+                    break;
+
+                case "param":
+                    System.out.println("Parameter is handeld by frontend");
+                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                    break;
+            }
+
+            System.out.println(CommandWriter.content);
+
+
+        } catch (JSONException e) {
+            System.out.println("no more next commands");
+            if (hasMultiple && currentMultiCommand < multipleCommands.length() - 1) {
+                currentMultiCommand++;
+                nextCommands = multipleCommands.getJSONArray(currentMultiCommand);
+            } else {
+                    nextCommands = currentMode.peek().getJSONArray("words");
+
+                hasMultiple = false;
+                CommandWriter.makeBreak();
+
+            }
+            System.out.println(CommandWriter.content);
+        }
+
+
+
+
+
+
+
+
+
+      /*  if (lengthOfCommands != 0 && currentCommand < lengthOfCommands) {
             try {
                 nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
             } catch (Exception e) {
@@ -142,7 +212,7 @@ public class JSONFileHandler {
                     changeMode(currentMode);
                 }
             }
-        }
+        }*/
     }
 
     /**

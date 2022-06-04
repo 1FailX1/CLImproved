@@ -1,26 +1,38 @@
 package CLImproved;
 
 public class CommandWriter {
-    String content = "";
-    String tabs = "";
+    static String content = "";
+    static String tabs = "";
+    static private boolean lineJumpMade = true;
 
-    CommandWriter() {
 
+    public static void writeLine(String s) {
+        content += tabs + s + "\n";
     }
 
-    public void writeLine(String text) {
-        content += tabs + text + System.lineSeparator();
+    public static void writeWord(String s) {
+        if (lineJumpMade) {
+            lineJumpMade = false;
+        } else {
+            content += " ";
+        }
+        content += s;
     }
 
-    public void addTab() {
+    public static void makeBreak() {
+        content += "\n";
+        lineJumpMade = true;
+    }
+
+    public static void addTab() {
         tabs += "\t";
     }
 
-    public void removeTab() {
+    public static void removeTab() {
         tabs = tabs.substring(1);
     }
 
-    public String getString(){
+    public static String getString() {
         return content;
     }
 }
