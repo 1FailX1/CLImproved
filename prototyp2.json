@@ -5,6 +5,7 @@
       {
         "type": "command",
         "word": "enable",
+        "jump": "privileged EXEC mode",
         "description": "Wechselt in den priviledged EXEC mode und fragt möglicherweise ein Passwort ab"
       },
       {

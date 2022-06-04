@@ -21,7 +21,7 @@ import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 0.4
+ * @version 0.4.1
  */
 
 public class Main extends Application {
@@ -122,6 +122,7 @@ public class Main extends Application {
         //Looping through all available modes to create a menu in the header
         for (int i = 0; i < modes.length; i++) {
             Button modeButton = new Button(modes[i]);
+            modeButton.setFocusTraversable(false);
             int finalI_mode = i;
             modeButton.setOnAction(actionEvent -> {
                 //Loading the new commands if the mode-changing button is pressed
@@ -133,44 +134,13 @@ public class Main extends Application {
                 loaded_descriptions = JSONFileHandler.getDescriptions();
                 center_gridPane.setHgap(50);
 
-
-                for (int i1 = 0; i1 < loaded_commands.length; i1++) {
-                    int finalI = i1;
-                    Button button1 = new Button("Add");
-                    button1.setOnAction(actionEvent2 -> {
-                        System.out.println("Button gedrückt");
-
-                        if (JSONFileHandler.isParam(finalI)) {
-                            System.out.println("Is parameter");
-                        }
-
-                        center_scrollPane = new ScrollPane();
-                        header_vBox = new VBox();
-                        center_gridPane = new GridPane();
-                        JSONFileHandler.loadNextWords(finalI);
-                        loaded_commands = JSONFileHandler.getWords();
-                        loaded_descriptions = JSONFileHandler.getDescriptions();
-                        printCurrentCommands();
-                        center_scrollPane.setContent(center_gridPane);
-                        scene_borderPane.setCenter(center_scrollPane);
-
-                    });
-
-
-                    Label label1 = new Label(loaded_commands[i1]);
-                    button1.setPrefWidth(40);
-                    label1.setPrefWidth(120);
-                    center_gridPane.add(label1, 1, i1);
-                    center_gridPane.add(button1, 0, i1);
-                    center_gridPane.add(new Label(loaded_descriptions[i1]), 2, i1);
-
-                }
-                header_vBox.getChildren().add(center_gridPane);
-                scrollPane1.setContent(header_vBox);
-                scene_borderPane.setCenter(scrollPane1);
+                //Printing out the commands in the center
+                printCurrentCommands();
+                //header_vBox.getChildren().add(center_gridPane);
+                //scrollPane1.setContent(header_vBox);
+                //scene_borderPane.setCenter(scrollPane1);
 
             });
-
 
             header_hBox_execmodes.getChildren().add(modeButton);
         }
@@ -182,33 +152,7 @@ public class Main extends Application {
         loaded_commands = JSONFileHandler.getWords();
         loaded_descriptions = JSONFileHandler.getDescriptions();
         center_gridPane.setHgap(50);
-        for (int i1 = 0; i1 < loaded_commands.length; i1++) {
-            int finalI_commands = i1;
-            Button button1 = new Button("Add");
-            /*button1.setOnAction(actionEvent2 -> {
-                System.out.println("Button egdrückt");
-                        /*
-                        if(JSONFileHandler.isParam(finalI)){
-                            System.out.println("Is parameter");
-                        }
-
-                JSONFileHandler.loadNextWords(finalI_commands);
-                System.out.println(finalI_commands);
-                commands[0] = JSONFileHandler.getWords();
-                descriptions[0] = JSONFileHandler.getDescriptions();
-                printCurrentCommands();
-                center_scrollPane.setContent(center_gridPane);
-                borderPane.setCenter(center_scrollPane);
-
-            }); */
-            Label label1 = new Label(loaded_commands[i1]);
-            button1.setPrefWidth(40);
-            label1.setPrefWidth(120);
-            center_gridPane.add(button1, 0, i1);
-            center_gridPane.add(label1, 1, i1);
-            center_gridPane.add(new Label(loaded_descriptions[i1]), 2, i1);
-
-        }
+        printCurrentCommands();
 
         center_scrollPane.setContent(center_gridPane);
 
@@ -219,11 +163,12 @@ public class Main extends Application {
         stage.show();
     }
 
-    //Currently not used
     public void printCurrentCommands() {
+        System.out.println(Arrays.toString(loaded_commands));
         for (int i1 = 0; i1 < loaded_commands.length; i1++) {
             int finalI_commands = i1;
             Button button1 = new Button("Add");
+            button1.setFocusTraversable(false);
             button1.setOnAction(actionEvent2 -> {
                 System.out.println("Button egdrückt");
                         /*
@@ -241,6 +186,7 @@ public class Main extends Application {
                 scene_borderPane.setCenter(scrollPane1);
 
             });
+            center_gridPane.setHgap(50);
             Label label1 = new Label(loaded_commands[i1]);
             button1.setPrefWidth(40);
             label1.setPrefWidth(120);
