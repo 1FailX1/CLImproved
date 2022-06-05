@@ -1,29 +1,30 @@
 package CLImproved;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.w3c.dom.ls.LSOutput;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 0.4.1
+ * @version 0.5
  */
 
 public class Main extends Application {
@@ -31,6 +32,7 @@ public class Main extends Application {
     String[] loaded_descriptions = {"d"};
     ScrollPane scrollPane1 = new ScrollPane();
     BorderPane scene_borderPane = new BorderPane();
+    private VBox header_vBox_container;
     private HBox header_hBox_execmodes;
     private ScrollPane center_scrollPane;
     private GridPane center_gridPane;
@@ -90,9 +92,6 @@ public class Main extends Application {
     public void start(Stage stage) {
 
         JSONFileHandler.init("prototyp2.json");
-        //System.out.println(Arrays.toString(JSONFileHandler.getWords()));
-        //System.out.println(Arrays.toString(JSONFileHandler.getDescriptions()));
-
         //-----
         String[] modes = JSONFileHandler.getModes();
         loaded_commands = JSONFileHandler.getWords();
@@ -109,17 +108,53 @@ public class Main extends Application {
 
         //HEADER
         ImageView header_logo = new ImageView();
+        ImageView header_saveAsSymbol = new ImageView();
         try {
             header_logo = new ImageView(new Image(new FileInputStream("assets\\CLImproved_Logo.png")));
+            header_saveAsSymbol = new ImageView(new Image(new FileInputStream("assets\\save_icon.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        header_vBox_container = new VBox();     //Container for the entire header
+
+        MenuBar header_menuBar = new MenuBar();
+        Menu header_menu1 = new Menu("Options");
+        MenuItem header_menuItem1 = new MenuItem("Save as");
+        header_menuItem1.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save");
+            fileChooser.setInitialFileName("Script_File");
+
+            //Set to user directory or go to default if cannot access
+            String userDirectoryString = System.getProperty("user.home") + "/Desktop";
+            File userDirectory = new File(userDirectoryString);
+            if (!userDirectory.canRead()) {
+                userDirectory = new File("c:/");
+            }
+            fileChooser.setInitialDirectory(userDirectory);
+
+            //Opening a dialog box
+            fileChooser.getExtensionFilters()
+                    .add(new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt"));
+            File selectedFile = fileChooser.showSaveDialog(stage);
+            try (BufferedWriter output = Files.newBufferedWriter(selectedFile.toPath(), StandardCharsets.UTF_8)) {
+                output.write(CommandWriter.content);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        header_menuItem1.setGraphic(header_saveAsSymbol);
+        header_menu1.getItems().add(header_menuItem1);
+        header_menuBar.getMenus().add(header_menu1);
 
         header_hBox_execmodes = new HBox();
         header_hBox_execmodes.setPrefHeight(100);
         header_hBox_execmodes.setPrefWidth(MAX_VALUE);
         header_hBox_execmodes.setAlignment(Pos.CENTER);
         header_hBox_execmodes.getChildren().add(header_logo);
+
+        header_vBox_container.getChildren().addAll(header_menuBar, header_hBox_execmodes);
 
         //Looping through all available modes to create a menu in the header
         for (int i = 0; i < modes.length; i++) {
@@ -150,34 +185,39 @@ public class Main extends Application {
 
         //CENTER
         center_scrollPane = new ScrollPane();
+        center_scrollPane.setFocusTraversable(false);
         center_gridPane = new GridPane();
         loaded_commands = JSONFileHandler.getWords();
         loaded_descriptions = JSONFileHandler.getDescriptions();
         center_gridPane.setHgap(50);
         printCurrentCommands();
-
+        center_scrollPane.setFocusTraversable(false);
+        center_gridPane.setFocusTraversable(false);
         center_scrollPane.setContent(center_gridPane);
 
         //Adding to Layouts
-        scene_borderPane.setTop(header_hBox_execmodes);
+        scene_borderPane.setTop(header_vBox_container);
         scene_borderPane.setCenter(center_scrollPane);
         stage.getIcons().add(header_logo.getImage());
         stage.show();
     }
 
     public void printCurrentCommands() {
-       // System.out.println(Arrays.toString(loaded_commands));
+
+        // System.out.println(Arrays.toString(loaded_commands));
         for (int i1 = 0; i1 < loaded_commands.length; i1++) {
             int finalI_commands = i1;
             Button button1 = new Button("Add");
             button1.setFocusTraversable(false);
             button1.setOnAction(actionEvent2 -> {
-            //    System.out.println("Button egdrückt");
-                        /*
-                        if(JSONFileHandler.isParam(finalI)){
-                            System.out.println("Is parameter");
-                        }
-                        */
+                //    System.out.println("Button egdrückt");
+
+                if (JSONFileHandler.isParam(finalI_commands)) {
+                    String parameter = PopUp.readWord(JSONFileHandler.getWords()[0]);
+                    CommandWriter.writeWord(parameter);
+                    System.out.println("Is parameter");
+                }
+
                 scrollPane1 = new ScrollPane();
                 center_gridPane = new GridPane();
                 JSONFileHandler.loadNextWords(finalI_commands);
@@ -197,5 +237,6 @@ public class Main extends Application {
             center_gridPane.add(new Label(loaded_descriptions[i1]), 2, i1);
 
         }
+
     }
 }
