@@ -1,5 +1,6 @@
 package CLImproved;
 
+import com.sun.glass.ui.Screen;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -119,9 +120,18 @@ public class Main extends Application {
         header_vBox_container = new VBox();     //Container for the entire header
 
         MenuBar header_menuBar = new MenuBar();
-        Menu header_menu1 = new Menu("Options");
-        MenuItem header_menuItem1 = new MenuItem("Save as");
-        header_menuItem1.setOnAction(event -> {
+        Menu header_menu1 = new Menu("File");
+        Menu header_menu2 = new Menu("Options");
+        Menu header_menu3 = new Menu("View");
+        Menu header_menu4 = new Menu("Help");
+
+        MenuItem[] header_menu1Items = new MenuItem[2];
+        header_menu1Items[0]= new MenuItem("Save as");
+        header_menu1Items[1] = new MenuItem("Save");
+
+        MenuItem header_menu4Item1 = new MenuItem("About");
+
+        header_menu1Items[0].setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save");
             fileChooser.setInitialFileName("Script_File");
@@ -146,9 +156,19 @@ public class Main extends Application {
                 System.out.println("Filesave aborted!");
             }
         });
-        header_menuItem1.setGraphic(header_saveAsSymbol);
-        header_menu1.getItems().add(header_menuItem1);
-        header_menuBar.getMenus().add(header_menu1);
+
+        header_menu4Item1.setOnAction(event -> {
+            Stage aboutStage = new Stage();
+            aboutStage.setResizable(false);
+            aboutStage.setWidth(500);
+            aboutStage.setHeight(700);
+
+            aboutStage.show();
+        });
+        header_menu1Items[0].setGraphic(header_saveAsSymbol);
+        header_menu1.getItems().addAll(header_menu1Items);
+        header_menu4.getItems().add(header_menu4Item1);
+        header_menuBar.getMenus().addAll(header_menu1, header_menu2, header_menu3, header_menu4);
 
         header_hBox_execmodes = new HBox();
         header_hBox_execmodes.setPrefHeight(100);
