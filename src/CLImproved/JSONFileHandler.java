@@ -91,7 +91,7 @@ public class JSONFileHandler {
         for (int i = 0; i < commands.length; i++) {
             try {
                 commands[i] = nextCommands.getJSONObject(i).getString("word");
-            }catch (Exception e){
+            } catch (Exception e) {
                 commands[i] = "";
             }
         }
@@ -170,8 +170,11 @@ public class JSONFileHandler {
                 currentMultiCommand.push(currentMultiCommand.pop() + 1);
                 nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
             } else {
-                multiCommands.pop();
-                currentMultiCommand.pop();
+                if (hasMultiple) {
+                    multiCommands.pop();
+                    currentMultiCommand.pop();
+                }
+
                 nextCommands = currentMode.peek().getJSONArray("words");
                 if (multiCommands.empty()) {
                     hasMultiple = false;
@@ -191,14 +194,6 @@ public class JSONFileHandler {
      * @return the boolean value
      */
     public static boolean isParam(int indexOfPressedCommand) {
-        try {
-            if (nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words")
-                    .getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
-                return true;
-            }
-        } catch (Exception e) {
-
-        }
         return false;
     }
 }
