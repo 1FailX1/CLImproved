@@ -14,7 +14,7 @@ public class CommandWriter {
         if (lineJumpMade) {
             lineJumpMade = false;
         } else {
-            content += " ";
+            content += tabs+" ";
         }
         content += s;
     }

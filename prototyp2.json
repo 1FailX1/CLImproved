@@ -78,6 +78,16 @@
               ]
             },
             {
+              "type": "command",
+              "word": "username",
+              "words": [
+                {
+                  "type": "param",
+                  "word": "username"
+                }
+              ]
+            },
+            {
               "type": "exitSubMode",
               "word": "exit"
             }
@@ -95,8 +105,11 @@
               "word": "clock",
               "words": [
                 {
-                  "type": "optCommand",
+                  "type": "command",
                   "word": "detail"
+                },
+                {
+                  "type": "finish"
                 }
               ]
             },
@@ -113,8 +126,11 @@
                   "word": "interface",
                   "words": [
                     {
-                      "type": "optCommand",
+                      "type": "command",
                       "word": "brief"
+                    },
+                    {
+                      "type": "finish"
                     }
                   ]
                 },
@@ -133,8 +149,11 @@
                   "word": "interface",
                   "words": [
                     {
-                      "type": "optCommand",
+                      "type": "command",
                       "word": "brief"
+                    },
+                    {
+                      "type": "finish"
                     }
                   ]
                 },
@@ -147,7 +166,7 @@
           ],
           [
             {
-              "type": "optCommand",
+              "type": "command",
               "word": "| include",
               "words": [
                 {
@@ -157,7 +176,7 @@
               ]
             },
             {
-              "type": "optCommand",
+              "type": "command",
               "word": "| exclude",
               "words": [
                 {
@@ -167,7 +186,7 @@
               ]
             },
             {
-              "type": "optCommand",
+              "type": "command",
               "word": "| begin",
               "words": [
                 {
@@ -175,6 +194,9 @@
                   "word": "String"
                 }
               ]
+            },
+            {
+              "type": "finish"
             }
           ]
         ]

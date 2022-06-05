@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -18,17 +17,15 @@ import java.util.Stack;
  */
 public class JSONFileHandler {
     private static JSONArray fileContent;
+    private static JSONArray nextCommands;
 
     private static Stack<JSONObject> currentMode = new Stack<>();
     private static String currentModeString = "";
     private static boolean isInSubMode = false;
 
-    private static int lengthOfCommands = 0;
-    private static int currentMultiCommand = 0;
+    private static Stack<Integer> currentMultiCommand = new Stack<>();
     private static boolean hasMultiple = false;
-
-    private static JSONArray nextCommands;
-    private static JSONArray multipleCommands;
+    private static Stack<JSONArray> multiCommands = new Stack<>();
 
     /**
      * @param file JSONfile that should be interpreted
@@ -55,11 +52,14 @@ public class JSONFileHandler {
      * @return returns array with all available modes
      */
     public static String[] getModes() {
-        String[] modes = new String[fileContent.length()];
-        for (int i = 0; i < fileContent.length(); i++) {
-            modes[i] = fileContent.getJSONObject(i).getString("category");
+        if (!isInSubMode) {
+            String[] modes = new String[fileContent.length()];
+            for (int i = 0; i < fileContent.length(); i++) {
+                modes[i] = fileContent.getJSONObject(i).getString("category");
+            }
+            return modes;
         }
-        return modes;
+        return new String[]{};
     }
 
     /**
@@ -89,8 +89,11 @@ public class JSONFileHandler {
     public static String[] getWords() {
         String[] commands = new String[nextCommands.length()];
         for (int i = 0; i < commands.length; i++) {
-            commands[i] = nextCommands.getJSONObject(i).getString("word");
-
+            try {
+                commands[i] = nextCommands.getJSONObject(i).getString("word");
+            }catch (Exception e){
+                commands[i] = "";
+            }
         }
         return commands;
     }
@@ -116,7 +119,11 @@ public class JSONFileHandler {
     public static void loadNextWords(int indexOfPressedCommand) {
         try {
             switch (nextCommands.getJSONObject(indexOfPressedCommand).getString("type")) {
-                case "optCommand":
+                case "finish":
+                    //force into catch as no further operations have to be made
+                    throw new JSONException("");
+
+
                 case "command":
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
@@ -126,9 +133,9 @@ public class JSONFileHandler {
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     System.out.println(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     hasMultiple = true;
-                    currentMultiCommand = 0;
-                    multipleCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-                    nextCommands = multipleCommands.getJSONArray(currentMultiCommand);
+                    currentMultiCommand.push(0);
+                    multiCommands.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words"));
+                    nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
                     break;
 
                 case "enterSubMode":
@@ -138,9 +145,8 @@ public class JSONFileHandler {
                     currentMode.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
                     isInSubMode = true;
                     nextCommands = currentMode.peek().getJSONArray("words");
-
-
                     break;
+
                 case "exitSubMode":
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     CommandWriter.makeBreak();
@@ -160,56 +166,22 @@ public class JSONFileHandler {
             }
         } catch (JSONException e) {
             System.out.println("no more next commands");
-            if (hasMultiple && currentMultiCommand < multipleCommands.length() - 1) {
-                currentMultiCommand++;
-                nextCommands = multipleCommands.getJSONArray(currentMultiCommand);
+            if (hasMultiple && currentMultiCommand.peek() < multiCommands.peek().length() - 1) {
+                currentMultiCommand.push(currentMultiCommand.pop() + 1);
+                nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
             } else {
+                multiCommands.pop();
+                currentMultiCommand.pop();
                 nextCommands = currentMode.peek().getJSONArray("words");
-                hasMultiple = false;
+                if (multiCommands.empty()) {
+                    hasMultiple = false;
+                }
                 CommandWriter.makeBreak();
             }
 
         }
         System.out.println(CommandWriter.content);
-      /*  if (lengthOfCommands != 0 && currentCommand < lengthOfCommands) {
-            try {
-                nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-            } catch (Exception e) {
-                currentCommand++;
-                nextCommands = multipleCommands.getJSONArray(currentCommand);
-                System.out.println(nextCommands);
-            }
-        } else {
-            lengthOfCommands = 0;
-            currentCommand = 0;
-            try {
-                changeMode(nextCommands.getJSONObject(indexOfPressedCommand).getString("jump"));
-            } catch (Exception e) {
-            }
 
-
-            try {
-                //tries to interpret "words" array as array with 2 dimensions
-                multipleCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-                multipleCommands.getJSONArray(0);//checks if words is 2 dimensional array,
-                // if not exception is thorwn and code bellow is not executed
-
-                nextCommands = multipleCommands.getJSONArray(currentCommand);
-                lengthOfCommands = nextCommands.length();
-                hasMultiple = true;
-
-            } catch (Exception e) {
-
-                try {
-                    //if exception is thrown try to interpret "words" array as 1 dimensional array
-                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-                } catch (Exception f) {
-                    //if non of the above interpretations worked there is
-                    // no "words" array and the first commands are loaded
-                    changeMode(currentMode);
-                }
-            }
-        }*/
     }
 
     /**
