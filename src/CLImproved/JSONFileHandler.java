@@ -76,11 +76,12 @@ public class JSONFileHandler {
     }
 
     public static void changeMode(int index) {
-        nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
-        currentModeString = getModes()[index];
-        currentMode.clear();
-        currentMode.push(fileContent.getJSONObject(index));
-
+        if (!isInSubMode) {
+            nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
+            currentModeString = getModes()[index];
+            currentMode.clear();
+            currentMode.push(fileContent.getJSONObject(index));
+        }
     }
 
     /**

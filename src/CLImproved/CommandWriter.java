@@ -13,8 +13,9 @@ public class CommandWriter {
     public static void writeWord(String s) {
         if (lineJumpMade) {
             lineJumpMade = false;
+            content += tabs;
         } else {
-            content += tabs+" ";
+            content+=" ";
         }
         content += s;
     }
