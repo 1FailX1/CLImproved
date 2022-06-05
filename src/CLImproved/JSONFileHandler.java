@@ -195,7 +195,9 @@ public class JSONFileHandler {
      * @return the boolean value
      */
     public static boolean isParam(int indexOfPressedCommand) {
-
+        if (nextCommands.getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
+            return true;
+        }
         return false;
     }
 }
