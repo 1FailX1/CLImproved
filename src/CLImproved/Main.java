@@ -141,6 +141,7 @@ public class Main extends Application {
                 File selectedFile = fileChooser.showSaveDialog(stage);
                 BufferedWriter output = Files.newBufferedWriter(selectedFile.toPath(), StandardCharsets.UTF_8);
                 output.write(CommandWriter.content);
+                output.flush();
             } catch (Exception e) {
                 System.out.println("Filesave aborted!");
             }
@@ -214,7 +215,8 @@ public class Main extends Application {
                 //    System.out.println("Button egdrückt");
 
                 if (JSONFileHandler.isParam(finalI_commands)) {
-                    String parameter = PopUp.readWord(JSONFileHandler.getWords()[0]);
+                    String parameter = PopUp.readLine(JSONFileHandler.getWords()[finalI_commands]);
+                    System.out.println(parameter);
                     CommandWriter.writeWord(parameter);
                     System.out.println("Is parameter");
                 }
