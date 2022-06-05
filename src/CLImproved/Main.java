@@ -137,11 +137,12 @@ public class Main extends Application {
             //Opening a dialog box
             fileChooser.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt"));
-            File selectedFile = fileChooser.showSaveDialog(stage);
-            try (BufferedWriter output = Files.newBufferedWriter(selectedFile.toPath(), StandardCharsets.UTF_8)) {
+            try {
+                File selectedFile = fileChooser.showSaveDialog(stage);
+                BufferedWriter output = Files.newBufferedWriter(selectedFile.toPath(), StandardCharsets.UTF_8);
                 output.write(CommandWriter.content);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Filesave aborted!");
             }
         });
         header_menuItem1.setGraphic(header_saveAsSymbol);
