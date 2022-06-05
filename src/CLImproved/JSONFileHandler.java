@@ -1,6 +1,5 @@
 package CLImproved;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,19 +13,24 @@ import java.util.Stack;
 
 /**
  * @author Hunor Zakarias
- * @version 1.0
+ * @version 1.2
  */
 public class JSONFileHandler {
+    //content of the file
     private static JSONArray fileContent;
+    //stores the currently aviable commands
     private static JSONArray nextCommands;
 
-    private static Stack<JSONObject> currentMode = new Stack<>();
-    private static String currentModeString = "";
+    //all currently accessed modes
+    private static Stack<JSONObject> accessedModes = new Stack<>();
     private static boolean isInSubMode = false;
 
-    private static Stack<Integer> currentMultiCommand = new Stack<>();
-    private static boolean hasMultiple = false;
+    //all accessed multicommands
     private static Stack<JSONArray> multiCommands = new Stack<>();
+    //index of multicommands which the user is in
+    private static Stack<Integer> currentMultiCommand = new Stack<>();
+    private static boolean isInMultiCommand = false;
+
 
     /**
      * @param file JSONfile that should be interpreted
@@ -36,15 +40,18 @@ public class JSONFileHandler {
         try {
             inputStream = Files.newInputStream(Path.of(file));
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("File konnte nicht gelesen weden");
         }
-
+        //the content of the json-file is stored inside fileContent
         JSONTokener tokener = new JSONTokener(inputStream);
         fileContent = new JSONArray(tokener);
-        currentMode.push(fileContent.getJSONObject(0));
+
+        //tries to change the mode to the first available one
         try {
-            changeMode(fileContent.getJSONObject(0).getString("category"));
+            changeMode(0);
         } catch (Exception e) {
+            //executes only if it was not successful to change the mode, in which case the file is empty or faulty
             throw new IllegalArgumentException("File might be empty or is faulty");
         }
     }
@@ -54,6 +61,7 @@ public class JSONFileHandler {
      */
     public static String[] getModes() {
         if (!isInSubMode) {
+            //executes code only, if the user is not in a submode
             String[] modes = new String[fileContent.length()];
             for (int i = 0; i < fileContent.length(); i++) {
                 modes[i] = fileContent.getJSONObject(i).getString("category");
@@ -64,25 +72,16 @@ public class JSONFileHandler {
     }
 
     /**
-     * @param mode changes the mode to mode
+     * @param index changes the mode to the index
      */
-    public static void changeMode(String mode) {
-        for (int i = 0; i < fileContent.length(); i++) {
-            if (fileContent.getJSONObject(i).get("category").equals(mode)) {
-                nextCommands = fileContent.getJSONObject(i).getJSONArray("words");
-                currentModeString = mode;
-                break;
-            }
-        }
-    }
-
     public static void changeMode(int index) {
-        System.out.println(isInSubMode);
         if (!isInSubMode) {
+            //executes code only, if the user is not in a submode as submodes must be exited
             nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
-            currentModeString = getModes()[index];
-            currentMode.clear();
-            currentMode.push(fileContent.getJSONObject(index));
+            //as the method can only change the mode to one of the outer ones, the stack can be cleared
+            // and the changed mode can be pushed onto the stack
+            accessedModes.clear();
+            accessedModes.push(fileContent.getJSONObject(index));
         }
     }
 
@@ -90,15 +89,19 @@ public class JSONFileHandler {
      * @return array with all currently available words
      */
     public static String[] getWords() {
-        String[] commands = new String[nextCommands.length()];
-        for (int i = 0; i < commands.length; i++) {
+        String[] words = new String[nextCommands.length()];
+
+        //loops through every element and gets the value for the object key "word"
+        for (int i = 0; i < words.length; i++) {
             try {
-                commands[i] = nextCommands.getJSONObject(i).getString("word");
+                //tries to get the value for the object key "word"
+                words[i] = nextCommands.getJSONObject(i).getString("word");
             } catch (Exception e) {
-                commands[i] = "";
+                //executes if object key "word" is not available
+                words[i] = "";
             }
         }
-        return commands;
+        return words;
     }
 
     /**
@@ -106,13 +109,18 @@ public class JSONFileHandler {
      */
     public static String[] getDescriptions() {
         String[] descriptions = new String[nextCommands.length()];
+
+        //loops through every element and gets the value for the object key "description"
         for (int i = 0; i < descriptions.length; i++) {
             try {
+                //tries to get the value for the object key "description"
                 descriptions[i] = nextCommands.getJSONObject(i).getString("description");
             } catch (Exception e) {
+                //executes if object key "description" is not available
                 descriptions[i] = "No Description";
             }
         }
+
         return descriptions;
     }
 
@@ -122,72 +130,106 @@ public class JSONFileHandler {
     public static void loadNextWords(int indexOfPressedCommand) {
         try {
             switch (nextCommands.getJSONObject(indexOfPressedCommand).getString("type")) {
-                case "finish":
-                    //force into catch as no further operations have to be made
-                    throw new JSONException("");
-
-
                 case "command":
+                    //gets the value of the object "word" and writes it into the file
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+
+                    //loads the following commands of command with "indexOfPressedCommand",
+                    //throws an error if no further commands are available
                     nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
                     break;
 
                 case "multiCommand":
+                    //gets the value of the object "word" and writes it into the file
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
-                    System.out.println(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
-                    hasMultiple = true;
-                    currentMultiCommand.push(0);
+
+                    //as the chosen command is a multicommand, isInMultiCommand is set to true
+                    //the multicommands of the command are pushed onto the stack as well as
+                    //the integer of the multicommand, which the user is currently in is pushed onto the stack
+                    isInMultiCommand = true;
                     multiCommands.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words"));
+                    currentMultiCommand.push(0);
+
+                    //the next commands are loaded into nextCommands
                     nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
                     break;
 
+                case "param":
+                    //as parameters are handeld by the frontend no further operations have to be done and
+                    //the next commands can be loaded into nextCommands
+                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
+                    break;
+
                 case "enterSubMode":
+                    //gets the value of the object "word" and writes it into the file,
+                    //makes a brake as no further commands are available and
+                    //a tab is added to visualize the submode in the final txt document
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     CommandWriter.makeBreak();
                     CommandWriter.addTab();
-                    currentMode.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
+
+                    //isInSubMode is set to true
+                    //the submode is pushed onto the "accessedMode" stack
                     isInSubMode = true;
-                    nextCommands = currentMode.peek().getJSONArray("words");
+                    accessedModes.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
+
+                    //the next commands are loaded into nextCommands
+                    nextCommands = accessedModes.peek().getJSONArray("words");
                     break;
 
                 case "exitSubMode":
+                    //gets the value of the object "word" and writes it into the file,
+                    //makes a brake as no further commands are available and
+                    //a tab is removed to visualize the exit of the submode in the final txt document
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
                     CommandWriter.makeBreak();
                     CommandWriter.removeTab();
-                    currentMode.pop();
-                    isInSubMode = false;
-                    nextCommands = currentMode.peek().getJSONArray("words");
 
-                    if (currentMode.capacity() < 2) {
+                    //as the submode is exited, it can be removed from the stack
+                    accessedModes.pop();
+
+                    //the next commands are loaded into nextCommands
+                    nextCommands = accessedModes.peek().getJSONArray("words");
+
+                    //if the size of the stack is 1, "isInSubMode" is set to false as this is the outermost mode
+                    //which cannot be exited
+                    if (accessedModes.size() == 1) {
                         isInSubMode = false;
                     }
                     break;
 
-                case "param":
-                    System.out.println("Parameter is handeld by frontend");
-                    nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
-                    break;
+                case "finish":
+                    //force into catch block as no further operations have to be made
+                    throw new JSONException("");
             }
         } catch (JSONException e) {
-            System.out.println("no more next commands");
-            if (hasMultiple && currentMultiCommand.peek() < multiCommands.peek().length() - 1) {
+            //if the user is currently in a multicommand and there are still  elements in the array left:
+            if (isInMultiCommand && currentMultiCommand.peek() < multiCommands.peek().length() - 1) {
+                //increment the currentMultiCommand variable
                 currentMultiCommand.push(currentMultiCommand.pop() + 1);
+
+                //loaded the next commands from the stack into nextCommands
                 nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
             } else {
-                if (hasMultiple) {
+
+                //as the condition was false, no more multicommands are available
+                //and the object can be ramoved from the stack
+                if (isInMultiCommand) {
                     multiCommands.pop();
                     currentMultiCommand.pop();
                 }
 
-                nextCommands = currentMode.peek().getJSONArray("words");
+                //the next commands are loaded from the mode-stack
+                nextCommands = accessedModes.peek().getJSONArray("words");
+
+                //sets "isInMultiCommand" to false if the "multiCommands" stack is empty
                 if (multiCommands.empty()) {
-                    hasMultiple = false;
+                    isInMultiCommand = false;
                 }
+                //creates a break
                 CommandWriter.makeBreak();
             }
-
         }
-        System.out.println(CommandWriter.content);
 
     }
 
@@ -198,6 +240,7 @@ public class JSONFileHandler {
      * @return the boolean value
      */
     public static boolean isParam(int indexOfPressedCommand) {
+        //if the value of the object key "type" equals "param" return true
         if (nextCommands.getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
             return true;
         }

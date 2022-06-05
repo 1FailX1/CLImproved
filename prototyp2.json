@@ -5,7 +5,6 @@
       {
         "type": "command",
         "word": "enable",
-        "jump": "privileged EXEC mode",
         "description": "Wechselt in den priviledged EXEC mode und fragt möglicherweise ein Passwort ab"
       },
       {
@@ -248,8 +247,7 @@
       {
         "type": "command",
         "word": "disable",
-        "description": " Wechselt in den user EXEC mode",
-        "jump": "user EXEC mode"
+        "description": " Wechselt in den user EXEC mode"
       },
       {
         "type": "command",
