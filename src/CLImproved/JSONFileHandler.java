@@ -195,6 +195,7 @@ public class JSONFileHandler {
      * @return the boolean value
      */
     public static boolean isParam(int indexOfPressedCommand) {
+
         return false;
     }
 }
