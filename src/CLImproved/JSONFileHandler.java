@@ -1,5 +1,6 @@
 package CLImproved;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +77,7 @@ public class JSONFileHandler {
     }
 
     public static void changeMode(int index) {
+        System.out.println(isInSubMode);
         if (!isInSubMode) {
             nextCommands = fileContent.getJSONObject(index).getJSONArray("words");
             currentModeString = getModes()[index];
@@ -153,6 +155,7 @@ public class JSONFileHandler {
                     CommandWriter.makeBreak();
                     CommandWriter.removeTab();
                     currentMode.pop();
+                    isInSubMode = false;
                     nextCommands = currentMode.peek().getJSONArray("words");
 
                     if (currentMode.capacity() < 2) {

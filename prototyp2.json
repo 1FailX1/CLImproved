@@ -211,11 +211,11 @@
             "words": [
               {
                 "type": "param",
-                "word": "1-31",
+                "word": "day 1-31",
                 "words": [
                   {
                     "type": "param",
-                    "word": "MONTH",
+                    "word": "month",
                     "words": [
                       {
                         "type": "param",
@@ -227,11 +227,11 @@
               },
               {
                 "type": "param",
-                "word": "MONTH",
+                "word": "month",
                 "words": [
                   {
                     "type": "param",
-                    "word": "1-31",
+                    "word": "day 1-31",
                     "words": [
                       {
                         "type": "param",
