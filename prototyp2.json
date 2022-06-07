@@ -117,6 +117,12 @@
               "word": "interfaces"
             },
             {
+              "type": "",
+              "word": ""
+            },
+
+            {
+
               "type": "command",
               "word": "ip",
               "words": [
