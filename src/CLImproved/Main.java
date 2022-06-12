@@ -162,11 +162,11 @@ public class Main extends Application {
         MenuItem header_menu4Item1 = new MenuItem("About");
         //Functionality for all items below header_menu1
         header_menu1Items[0].setOnAction(event -> {
-            safeAs(stage);
+            saveAs(stage);
         });
         header_menu1Items[1].setOnAction(event -> {
             System.out.println(contentAtLastSave);
-            if (contentAtLastSave != "") {
+            if (filePathAtLastSave != "") {
                 try {
                     BufferedWriter output = Files.newBufferedWriter(Paths.get(filePathAtLastSave), StandardCharsets.UTF_8);
                     contentAtLastSave = CommandWriter.content;
@@ -176,7 +176,7 @@ public class Main extends Application {
                     System.out.println("Filesave aborted!");
                 }
             } else {
-                safeAs(stage);
+                saveAs(stage);
             }
         });
 
@@ -382,7 +382,7 @@ public class Main extends Application {
     }
     */
 
-    private void safeAs(Stage stage) {
+    private void saveAs(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
         fileChooser.setInitialFileName("Script_File");
