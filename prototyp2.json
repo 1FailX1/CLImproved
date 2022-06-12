@@ -80,9 +80,198 @@
               "type": "command",
               "word": "username",
               "words": [
+                [
+                  {
+                    "type": "param",
+                    "word": "username"
+                  }
+                ],
+                [
+                  {
+                    "type": "command",
+                    "word": "secret"
+                  }
+                ]
+              ]
+            },
+            {
+              "type": "command",
+              "word": "banner motd",
+              "words": [
                 {
                   "type": "param",
-                  "word": "username"
+                  "word": "Nachricht"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "ipv6",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "unicast-routing"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "service",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "password-encryption"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "security passwords",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "min-length",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Length"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "login",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "block-for",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Zeit in s",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "attempts",
+                          "words": [
+                            {
+                              "type": "param",
+                              "word": "Versuche",
+                              "words": [
+                                {
+                                  "type": "word",
+                                  "word": "within",
+                                  "words": [
+                                    {
+                                      "type": "param",
+                                      "word": "Zeit in s"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "on-failure"
+                },
+                {
+                  "type": "command",
+                  "word": "on-success"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "crypto",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "dynamic-map"
+                },
+                {
+                  "type": "command",
+                  "word": "ipsec"
+                },
+                {
+                  "type": "command",
+                  "word": "isakmp"
+                },
+                {
+                  "type": "command",
+                  "word": "key",
+                  "words": [
+                    {
+                      "type": "command",
+                      "word": "generate",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "rsa",
+                          "words": [
+                            {
+                              "type": "command",
+                              "word": "general-keys",
+                              "words": [
+                                {
+                                  "type": "command",
+                                  "word": "modulus",
+                                  "words": [
+                                    {
+                                      "type": "param",
+                                      "word": "Modulus Zahl 360-4096"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "finish"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "command",
+                      "word": "zeroize"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "map"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "interface",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "FastEthernet"
+                },
+                {
+                  "type": "command",
+                  "word": "GigabitEthernet"
+                },
+                {
+                  "type": "command",
+                  "word": "Vlan",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Vlan ID"
+                    }
+                  ]
                 }
               ]
             },
@@ -115,6 +304,10 @@
             {
               "type": "command",
               "word": "interfaces"
+            },
+            {
+              "type": "",
+              "word": ""
             },
             {
               "type": "command",
