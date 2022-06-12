@@ -159,8 +159,9 @@ public class JSONFileHandler {
                     //the next commands can be loaded into nextCommands
                     nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
                     break;
+                case "param/enterSubMode":
 
-                case "enterSubMode":
+                case "command/enterSubMode":
                     //gets the value of the object "word" and writes it into the file,
                     //makes a brake as no further commands are available and
                     //a tab is added to visualize the submode in the final txt document
@@ -241,7 +242,8 @@ public class JSONFileHandler {
      */
     public static boolean isParam(int indexOfPressedCommand) {
         //if the value of the object key "type" equals "param" return true
-        if (nextCommands.getJSONObject(indexOfPressedCommand).getString("type").equals("param")) {
+        String currenPressedCommand = nextCommands.getJSONObject(indexOfPressedCommand).getString("type");
+        if (currenPressedCommand.equals("param") || currenPressedCommand.equals("param/enterSubMode")) {
             return true;
         }
         return false;
