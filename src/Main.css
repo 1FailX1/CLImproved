@@ -1,4 +1,5 @@
 .root {
-    -fx-focus-color: black;
+    -fx-focus-color: #000000;
+    -fx-border-radius: 0;
     /*faint-focus-color: black;*/
 }

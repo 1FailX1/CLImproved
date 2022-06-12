@@ -28,7 +28,7 @@
     "category": "privileged EXEC mode",
     "words": [
       {
-        "type": "enterSubMode",
+        "type": "command/enterSubMode",
         "word": "configure terminal",
         "description": "Wechselt in den global config mode",
         "submode": {
@@ -77,7 +77,7 @@
               ]
             },
             {
-              "type": "command",
+              "type": "multiCommand",
               "word": "username",
               "words": [
                 [
@@ -257,11 +257,45 @@
               "words": [
                 {
                   "type": "command",
-                  "word": "FastEthernet"
+                  "word": "FastEthernet",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Interface"
+                    }
+                  ]
                 },
                 {
                   "type": "command",
-                  "word": "GigabitEthernet"
+                  "word": "GigabitEthernet",
+                  "words": [
+                    {
+                      "type": "param/enterSubMode",
+                      "word": "Interface",
+                      "submode": {
+                        "words": [
+                          {
+                            "type": "command",
+                            "word": "shutdown"
+                          },
+                          {
+                            "type": "command",
+                            "word": "no",
+                            "words": [
+                              {
+                                "type": "command",
+                                "word": "shutdown"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "exitSubMode",
+                            "word": "exit"
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 },
                 {
                   "type": "command",
@@ -304,10 +338,6 @@
             {
               "type": "command",
               "word": "interfaces"
-            },
-            {
-              "type": "",
-              "word": ""
             },
             {
               "type": "command",

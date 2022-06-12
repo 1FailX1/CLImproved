@@ -152,6 +152,8 @@ public class JSONFileHandler {
 
                     //the next commands are loaded into nextCommands
                     nextCommands = multiCommands.peek().getJSONArray(currentMultiCommand.peek());
+
+                    System.out.println(nextCommands);
                     break;
 
                 case "param":
@@ -160,6 +162,19 @@ public class JSONFileHandler {
                     nextCommands = nextCommands.getJSONObject(indexOfPressedCommand).getJSONArray("words");
                     break;
                 case "param/enterSubMode":
+                    //isInSubMode is set to true
+                    //the submode is pushed onto the "accessedMode" stack
+                    isInSubMode = true;
+                    accessedModes.push(nextCommands.getJSONObject(indexOfPressedCommand).getJSONObject("submode"));
+
+                    //makes a brake as no further commands are available and
+                    //a tab is added to visualize the submode in the final txt document
+                    CommandWriter.makeBreak();
+                    CommandWriter.addTab();
+
+                    //the next commands are loaded into nextCommands
+                    nextCommands = accessedModes.peek().getJSONArray("words");
+                    break;
 
                 case "command/enterSubMode":
                     //gets the value of the object "word" and writes it into the file,
@@ -183,6 +198,7 @@ public class JSONFileHandler {
                     //makes a brake as no further commands are available and
                     //a tab is removed to visualize the exit of the submode in the final txt document
                     CommandWriter.writeWord(nextCommands.getJSONObject(indexOfPressedCommand).getString("word"));
+                    CommandWriter.makeBreak();
                     CommandWriter.makeBreak();
                     CommandWriter.removeTab();
 
