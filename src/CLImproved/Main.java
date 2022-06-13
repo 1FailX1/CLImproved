@@ -1,11 +1,16 @@
 package CLImproved;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,12 +34,13 @@ import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 0.8
+ * @version 1.0
  */
 
 public class Main extends Application {
     String contentAtLastSave = "";
     String filePathAtLastSave = "";
+    double defFontSize;
 
     String[] modes;
     String[] loaded_commands = {"d"};
@@ -43,6 +50,10 @@ public class Main extends Application {
     private HBox header_hBox_execmodes;
     private ScrollPane center_scrollPane;
     private GridPane center_gridPane;
+    MenuBar header_menuBar;
+    Menu header_menu1;
+    Menu header_menu2;
+    Menu header_menu3;
     Image header_logo_image;
     ImageView header_logo;
     Image header_saveAsSymbol_image;
@@ -57,8 +68,11 @@ public class Main extends Application {
     ImageView center_addButton;
     private TextArea right_textArea;
 
+    RadioButton rb1 = new RadioButton();
+    RadioButton rb2 = new RadioButton();
+
     /**
-     * @param args Main-method for launching the window
+     * @param args Main-method for launching the window.
      */
     public static void main(String[] args) {
         //testingFunctions();
@@ -67,11 +81,11 @@ public class Main extends Application {
     }
 
     /**
-     * @param stage Opens the GUI-containing window
+     * @param stage Opens the GUI-containing window.
      */
     @Override
     public void start(Stage stage) {
-        JSONFileHandler.init("prototyp2.json");
+        JSONFileHandler.init("ciscofile.json");
         //-----
         modes = JSONFileHandler.getModes();
         loaded_commands = JSONFileHandler.getWords();
@@ -81,13 +95,16 @@ public class Main extends Application {
 
         stage.setTitle("CLImproved");
         stage.setResizable(false);
-        stage.setHeight(720);
-        stage.setWidth(1280);
 
         //Main Layout
         Scene scene = new Scene(scene_borderPane, 1280, 820);
         scene.getStylesheets().add("Main.css");
         stage.setScene(scene);
+
+        Dimension monitorSize = Toolkit.getDefaultToolkit().getScreenSize();
+        stage.setHeight(monitorSize.getHeight() * 0.7);
+        stage.setWidth(((monitorSize.getHeight() * 0.7) / 9) * 16);
+        defFontSize = monitorSize.getHeight() * 0.02;
 
         //Importing graphics
         try {
@@ -112,11 +129,10 @@ public class Main extends Application {
         header_appearanceSymbol.setFitHeight(15);
 
         //HEADER
-        MenuBar header_menuBar = new MenuBar();
-        Menu header_menu1 = new Menu("File");
-        Menu header_menu2 = new Menu("Options");
-        Menu header_menu3 = new Menu("View");
-        Menu header_menu4 = new Menu("Help");
+        header_menuBar = new MenuBar();
+        header_menu1 = new Menu("File");
+        header_menu2 = new Menu("Options");
+        header_menu3 = new Menu("Help");
 
         MenuItem[] header_menu1Items = new MenuItem[2];
         header_menu1Items[0] = new MenuItem("Save as");
@@ -125,14 +141,14 @@ public class Main extends Application {
         MenuItem[] header_menu2Items = new MenuItem[1];
         header_menu2Items[0] = new MenuItem("Appearance");
 
-        MenuItem header_menu4Item1 = new MenuItem("About");
+        MenuItem header_menu3Item1 = new MenuItem("About");
         //Functionality for all items below header_menu1
         header_menu1Items[0].setOnAction(event -> {
             saveAs(stage);
         });
         header_menu1Items[1].setOnAction(event -> {
             System.out.println(contentAtLastSave);
-            if (filePathAtLastSave != "") {
+            if (!filePathAtLastSave.equals("")) {
                 try {
                     BufferedWriter output = Files.newBufferedWriter(Paths.get(filePathAtLastSave), StandardCharsets.UTF_8);
                     contentAtLastSave = CommandWriter.content;
@@ -146,7 +162,7 @@ public class Main extends Application {
             }
         });
 
-        header_menu4Item1.setOnAction(event -> {
+        header_menu3Item1.setOnAction(event -> {
             Stage aboutStage = new Stage();
             BorderPane aboutPane = new BorderPane();
             Scene aboutStage_scene = new Scene(aboutPane);
@@ -154,8 +170,8 @@ public class Main extends Application {
             ImageView aboutPagelogoImage = header_logo;
             HBox picuteHBox = new HBox(aboutPagelogoImage);
             Label infoLabel = new Label("CLImproved for Windows\n" +
-                    "Version 1.3\n" +
-                    "GUI Version 0.7 (Beta)\n\n" +
+                    "Version 1.3.1\n" +
+                    "GUI Version 1.0\n\n" +
                     "Made by\n" +
                     "-Felix Payer\n" +
                     "-Hunor Zakarias\n\n" +
@@ -189,92 +205,28 @@ public class Main extends Application {
         header_menu2Items[0].setOnAction(actionEvent -> {
             appearance_label = new Label("Appearance presets:");
             final ToggleGroup appearance_toggleGroup = new ToggleGroup();
-            RadioButton rb1 = new RadioButton("Regular");
+            rb1 = new RadioButton("Dark Mode");
             rb1.setToggleGroup(appearance_toggleGroup);
             rb1.setSelected(true);
 
-            RadioButton rb2 = new RadioButton("Dark Mode");
+            rb2 = new RadioButton("Light Mode");
             rb2.setToggleGroup(appearance_toggleGroup);
 
-            RadioButton rb3 = new RadioButton("Please don't");
-            rb3.setToggleGroup(appearance_toggleGroup);
 
-            appearance_toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-                @Override
-                public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                    if (rb1.isSelected()) {
-                        for (int i = 0; i < header_modeButtons.length; i++) {
-                            header_modeButtons[i].setId("darkMode_header_modeButton");
-                        }
-                        /*ContextMenu contextMenu = new ContextMenu();
-                        contextMenu.setId("darkMode_context-menu");
-                        header_menuBar.setContextMenu(contextMenu);*/
-
-                        header_menuBar.setStyle("-fx-background-color: #555555;");
-                        header_menu1.setId("darkMode_menu");
-                        header_menu2.setId("darkMode_menu");
-                        header_menu3.setId("darkMode_menu");
-                        header_menu4.setId("darkMode_menu");
-
-                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151 #515151 transparent #515151;");
-
-                        center_scrollPane.setStyle("-fx-border-color: #3C3F41;" +
-                                "-fx-background: #3C3F41;" +
-                                "-fx-text-fill: #BBBBBB;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151;");
-
-                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;" +
-                                "-fx-background-radius: 0;");
-                        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
-                                "-fx-background-color: #2b2b2b;" +
-                                "-fx-text-fill: #A9B7C6;" +
-                                "-fx-border-color: #515151;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151 #515151 #515151 transparent;");
-
-                    } else if (rb2.isSelected()) {
-                        for (int i = 0; i < header_modeButtons.length; i++) {
-                            header_modeButtons[i].setId("darkMode_header_modeButton");
-                        }
-                        header_menuBar.setId("darkMode_contextMenu");
-                        header_menuBar.setStyle("-fx-background-color: #555555;");
-                        header_menu1.setId("darkMode_menu");
-                        header_menu2.setId("darkMode_menu");
-                        header_menu3.setId("darkMode_menu");
-                        header_menu4.setId("darkMode_menu");
-
-                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151 #515151 transparent #515151;");
-
-                        center_scrollPane.setStyle("-fx-border-color: #3C3F41;" +
-                                "-fx-background: #3C3F41;" +
-                                "-fx-text-fill: #BBBBBB;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151;");
-
-                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;" +
-                                "-fx-background-radius: 0;");
-                        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
-                                "-fx-background-color: #2b2b2b;" +
-                                "-fx-text-fill: #A9B7C6;" +
-                                "-fx-border-color: #515151;" +
-                                "-fx-border-width: 2px;" +
-                                "-fx-border-color: #515151 #515151 #515151 transparent;");
-
-                    }
+            appearance_toggleGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+                if (rb1.isSelected()) {
+                    toggleDarkMode();
+                } else if (rb2.isSelected()) {
+                    toggleLightMode();
                 }
             });
 
             VBox appearance_vBox = new VBox();
             appearance_vBox.setPadding(new Insets(15));
             appearance_vBox.setSpacing(30);
-            appearance_vBox.getChildren().addAll(appearance_label, rb1, rb2, rb3);
+            appearance_vBox.getChildren().addAll(appearance_label, rb1, rb2);
 
-            Scene secondScene = new Scene(appearance_vBox, 235, 180);
+            Scene secondScene = new Scene(appearance_vBox, 235, 160);
 
             // New window (Stage)
             Stage newWindow = new Stage();
@@ -296,9 +248,9 @@ public class Main extends Application {
         header_menu2Items[0].setGraphic(header_appearanceSymbol);
         header_menu2.getItems().addAll(header_menu2Items);
 
-        header_menu4.getItems().add(header_menu4Item1);
+        header_menu3.getItems().add(header_menu3Item1);
 
-        header_menuBar.getMenus().addAll(header_menu1, header_menu2, header_menu3, header_menu4);
+        header_menuBar.getMenus().addAll(header_menu1, header_menu2, header_menu3);
 
         header_hBox_execmodes = new HBox();
         header_hBox_execmodes.setPadding(new Insets(0, 450, 0, 0));
@@ -327,6 +279,7 @@ public class Main extends Application {
 
         //RIGHT
         right_textArea = new TextArea(CommandWriter.content);
+        right_textArea.setFont(Font.font("System Regular", (int) (defFontSize * 0.7)));
         right_textArea.setFocusTraversable(false);
         right_textArea.setPrefSize(400, 1000);
         right_textArea.textProperty().addListener((observableValue, s, t1) ->
@@ -336,15 +289,21 @@ public class Main extends Application {
         scene_borderPane.setTop(header_vBox_container);
         scene_borderPane.setCenter(center_scrollPane);
         scene_borderPane.setRight(right_textArea);
+
+
         stage.getIcons().add(header_logo.getImage());
         stage.show();
+        toggleDarkMode();
     }
 
+    /**
+     * Graphically represents the exec-modes.
+     */
     private void printExecModes() {
 
         for (int i = 0; i < modes.length; i++) {
             header_modeButtons[i] = new Button(modes[i]);
-            header_modeButtons[i].setFont(Font.font("System Regular", 15));
+            header_modeButtons[i].setFont(Font.font("System Regular", (int) (defFontSize * 0.75)));
             header_modeButtons[i].setFocusTraversable(false);
             int finalI_mode = i;
             header_modeButtons[i].setOnAction(actionEvent -> {
@@ -364,6 +323,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Graphically represents the current commands.
+     */
     private void printCurrentCommands() {
         center_gridPane.setHgap(50);
         center_gridPane.setVgap(5);
@@ -377,14 +339,10 @@ public class Main extends Application {
             button1.setGraphic(new ImageView(center_addButton_image));
             button1.setFocusTraversable(false);
             button1.setOnAction(actionEvent2 -> {
-                //    System.out.println("Button egdrückt")
                 if (JSONFileHandler.isParam(finalI_commands)) {
                     String parameter = PopUp.readLine(JSONFileHandler.getWords()[finalI_commands]);
-                    System.out.println(parameter);
                     CommandWriter.writeWord(parameter);
-                    System.out.println("Is parameter");
                 }
-
                 center_gridPane.getChildren().clear();
                 JSONFileHandler.loadNextWords(finalI_commands);
                 loaded_commands = JSONFileHandler.getWords();
@@ -397,62 +355,26 @@ public class Main extends Application {
                 right_textArea.setScrollTop(Double.MAX_VALUE);
                 right_textArea.positionCaret(CommandWriter.content.length());
             });
-
+            if (loaded_commands.length == 1) {
+                button1.fire();
+            }
             Label label1 = new Label(loaded_commands[i1]);
+            label1.setFont(Font.font("System Regular", (int) (defFontSize * 0.7)));
             button1.setPrefWidth(40);
             label1.setPrefWidth(120);
+            Label label2 = new Label(loaded_descriptions[i1]);
+            label2.setFont(Font.font("System Regular", (int) (defFontSize * 0.6)));
             center_gridPane.add(button1, 0, i1);
             center_gridPane.add(label1, 1, i1);
-            center_gridPane.add(new Label(loaded_descriptions[i1]), 2, i1);
+            center_gridPane.add(label2, 2, i1);
 
         }
 
     }
-    /*public void printCurrentCommands() {
-        center_gridPane.setHgap(50);
-        center_gridPane.setVgap(5);
 
-        // System.out.println(Arrays.toString(loaded_commands));
-        for (int i1 = 0; i1 < loaded_commands.length; i1++) {
-            int finalI_commands = i1;
-            Button button1 = new Button();
-            button1.setBackground(null);
-            button1.setGraphic(new ImageView(center_addButton_image));
-            button1.setFocusTraversable(false);
-            button1.setOnAction(actionEvent2 -> {
-                //    System.out.println("Button egdrückt")
-                if (JSONFileHandler.isParam(finalI_commands)) {
-                    String parameter = PopUp.readLine(JSONFileHandler.getWords()[finalI_commands]);
-                    System.out.println(parameter);
-                    CommandWriter.writeWord(parameter);
-                    System.out.println("Is parameter");
-                }
-
-                center_gridPane.getChildren().clear();
-                JSONFileHandler.loadNextWords(finalI_commands);
-                loaded_commands = JSONFileHandler.getWords();
-                loaded_descriptions = JSONFileHandler.getDescriptions();
-                printCurrentCommands();
-                center_scrollPane.setContent(center_gridPane);
-                scene_borderPane.setCenter(center_scrollPane);
-                //Refreshing the TextField
-                right_textField.setText(CommandWriter.content);
-                right_textField.setScrollTop(Double.MAX_VALUE);
-                right_textField.positionCaret(CommandWriter.content.length());
-            });
-
-            Label label1 = new Label(loaded_commands[i1]);
-            button1.setPrefWidth(40);
-            label1.setPrefWidth(120);
-            center_gridPane.add(button1, 0, i1);
-            center_gridPane.add(label1, 1, i1);
-            center_gridPane.add(new Label(loaded_descriptions[i1]), 2, i1);
-
-        }
-
-    }
-    */
-
+    /**
+     * @param stage Executes the task of saving the current file.
+     */
     private void saveAs(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
@@ -481,4 +403,70 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Graphically toggles the dark-mode option (standard).
+     */
+    private void toggleDarkMode() {
+        for (int i = 0; i < header_modeButtons.length; i++) {
+            header_modeButtons[i].setId("darkMode_header_modeButton");
+        }
+        header_menuBar.setId("darkMode_contextMenu");
+        header_menuBar.setStyle("-fx-background-color: #555555;");
+        header_menu1.setId("darkMode_menu");
+        header_menu2.setId("darkMode_menu");
+        header_menu3.setId("darkMode_menu");
+
+        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #515151 #515151 transparent #515151;");
+
+        center_scrollPane.setStyle("-fx-border-color: #3C3F41;" +
+                "-fx-background: #3C3F41;" +
+                "-fx-text-fill: #BBBBBB;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #515151;");
+
+        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;" +
+                "-fx-background-radius: 0;");
+        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
+                "-fx-background-color: #2b2b2b;" +
+                "-fx-text-fill: #A9B7C6;" +
+                "-fx-border-color: #515151;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #515151 #515151 #515151 transparent;");
+    }
+
+    /**
+     * Graphically toggles the light-mode option.
+     */
+    private void toggleLightMode() {
+        for (int i = 0; i < header_modeButtons.length; i++) {
+            header_modeButtons[i].setId("lightMode_header_modeButton");
+        }
+        header_menuBar.setId("lightMode_contextMenu");
+        header_menuBar.setStyle("-fx-background-color: #E9E9E9;" +
+                "-fx-color: #000000;");
+        header_menu1.setId("lightMode_menu");
+        header_menu2.setId("lightMode_menu");
+        header_menu3.setId("lightMode_menu");
+
+        header_hBox_execmodes.setStyle("-fx-background-color: #F4F4F4;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #C8C8C8 #C8C8C8 transparent #C8C8C8;");
+
+        center_scrollPane.setStyle("-fx-border-color: #F4F4F4;" +
+                "-fx-background: #F4F4F4;" +
+                "-fx-text-fill: #BBBBBB;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #C8C8C8;");
+
+        right_textArea.lookup(".content").setStyle("-fx-background-color: #D9D9D9;" +
+                "-fx-background-radius: 0;");
+        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
+                "-fx-background-color: #D9D9D9;" +
+                "-fx-text-fill: #000000;" +
+                "-fx-border-color: #C8C8C8;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-color: #C8C8C8 #C8C8C8 #C8C8C8 transparent;");
+    }
 }
