@@ -317,11 +317,149 @@
         }
       },
       {
+        "type": "command",
+        "word": "clock set",
+        "words": [
+          {
+            "type": "param",
+            "word": "hh:mm:ss",
+            "words": [
+              {
+                "type": "param",
+                "word": "day 1-31",
+                "words": [
+                  {
+                    "type": "param",
+                    "word": "month",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "year"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "param",
+                "word": "month",
+                "words": [
+                  {
+                    "type": "param",
+                    "word": "day 1-31",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "year"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "copy",
+        "words": [
+          {
+            "type": "command",
+            "word": "running-config",
+            "words": [
+              {
+                "type": "command",
+                "word": "startup-config"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "startup-config",
+            "words": [
+              {
+                "type": "command",
+                "word": "running-config"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "delete",
+        "words": [
+          {
+            "type": "param",
+            "word": "WORD"
+          },
+          {
+            "type": "command",
+            "word": "flash"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "dir",
+        "words": [
+          {
+            "type": "param",
+            "word": "Directory or Filename"
+          },
+          {
+            "type": "command",
+            "word": "flash"
+          },
+          {
+            "type": "command",
+            "word": "nvram"
+          },
+          {
+            "type": "finish"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "disable",
+        "description": " Wechselt in den user EXEC mode"
+      },
+      {
+        "type": "command",
+        "word": "erase startup-config",
+        "description": "Setzt alle Einstellungen zurück"
+      },
+      {
+        "type": "command",
+        "word": "exit"
+      },
+      {
+        "type": "command",
+        "word": "ping",
+        "words": [
+          {
+            "type": "param",
+            "word": "IP(v6)-address"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "reload",
+        "description": "Startet das System neu"
+      },
+      {
         "type": "multiCommand",
         "word": "show",
         "description": "bruh",
         "words": [
           [
+            {
+              "type": "command",
+              "word": "arp"
+            },
             {
               "type": "command",
               "word": "clock",
@@ -337,7 +475,180 @@
             },
             {
               "type": "command",
-              "word": "interfaces"
+              "word": "crypto",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "key",
+                  "words": [
+                    {
+                      "type": "command",
+                      "word": "mypubkey",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "rsa"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "debugging"
+            },
+            {
+              "type": "command",
+              "word": "dhcp",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "lease"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "dotll",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "interface"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "history"
+            },
+            {
+              "type": "command",
+              "word": "hosts"
+            },
+            {
+              "type": "command",
+              "word": "interfaces",
+              "words": [
+                {
+                  "type": "command",
+                  "word": "Ethernet",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Port",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "status"
+                        },
+                        {
+                          "type": "command",
+                          "word": "switchport"
+                        },
+                        {
+                          "type": "finish"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "FastEthernet",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "FastEthernet interface number",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "status"
+                        },
+                        {
+                          "type": "command",
+                          "word": "switchport"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "finish"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "GigabitEthernet",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "GigabitEthernet interface number",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "status"
+                        },
+                        {
+                          "type": "command",
+                          "word": "switchport"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "finish"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "loopback",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "Loopback interface number",
+                      "words": [
+                        {
+                          "type": "command",
+                          "word": "switchport"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "finish"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "vlan",
+                  "words": [
+                    {
+                      "type": "param",
+                      "word": "VLAN interface number"
+                    }
+                  ]
+                },
+                {
+                  "type": "command",
+                  "word": "status"
+                },
+                {
+                  "type": "command",
+                  "word": "switchport"
+                },
+                {
+                  "type": "command",
+                  "word": "trunk"
+                },
+                {
+                  "type": "finish"
+                }
+              ]
+            },
+            {
+              "type": "command",
+              "word": "dtp"
             },
             {
               "type": "command",
@@ -425,236 +736,40 @@
       },
       {
         "type": "command",
-        "word": "clock set",
+        "word": "telnet",
         "words": [
           {
             "type": "param",
-            "word": "hh:mm:ss",
-            "words": [
-              {
-                "type": "param",
-                "word": "day 1-31",
-                "words": [
-                  {
-                    "type": "param",
-                    "word": "month",
-                    "words": [
-                      {
-                        "type": "param",
-                        "word": "year"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "param",
-                "word": "month",
-                "words": [
-                  {
-                    "type": "param",
-                    "word": "day 1-31",
-                    "words": [
-                      {
-                        "type": "param",
-                        "word": "year"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            "word": "IP(v6)-address"
           }
         ]
       },
       {
         "type": "command",
-        "word": "disable",
-        "description": " Wechselt in den user EXEC mode"
-      },
-      {
-        "type": "command",
-        "word": "write memory",
-        "description": "Speichert alle Einstellungen"
-      },
-      {
-        "type": "command",
-        "word": "erase startup-config",
-        "description": "Setzt alle Einstellungen zurück"
-      },
-      {
-        "type": "command",
-        "word": "copy",
+        "word": "traceroute",
         "words": [
           {
-            "type": "command",
-            "word": "flash",
-            "words": [
-              {
-                "type": "command",
-                "word": "ftp"
-              },
-              {
-                "type": "command",
-                "word": "running-config"
-              },
-              {
-                "type": "command",
-                "word": "scp"
-              },
-              {
-                "type": "command",
-                "word": "startup-config"
-              },
-              {
-                "type": "command",
-                "word": "tftp"
-              }
-            ]
-          },
-          {
-            "type": "command",
-            "word": "ftp",
-            "words": [
-              {
-                "type": "command",
-                "word": "flash"
-              },
-              {
-                "type": "command",
-                "word": "running-config"
-              },
-              {
-                "type": "command",
-                "word": "scp"
-              },
-              {
-                "type": "command",
-                "word": "startup-config"
-              },
-              {
-                "type": "command",
-                "word": "tftp"
-              }
-            ]
-          },
-          {
-            "type": "command",
-            "word": "running-config",
-            "words": [
-              {
-                "type": "command",
-                "word": "flash"
-              },
-              {
-                "type": "command",
-                "word": "ftp"
-              },
-              {
-                "type": "command",
-                "word": "scp"
-              },
-              {
-                "type": "command",
-                "word": "startup-config"
-              },
-              {
-                "type": "command",
-                "word": "tftp"
-              }
-            ]
-          },
-          {
-            "type": "command",
-            "word": "scp",
-            "words": [
-              {
-                "type": "command",
-                "word": "flash"
-              },
-              {
-                "type": "command",
-                "word": "ftp"
-              },
-              {
-                "type": "command",
-                "word": "running-config"
-              },
-              {
-                "type": "command",
-                "word": "startup-config"
-              },
-              {
-                "type": "command",
-                "word": "tftp"
-              }
-            ]
-          },
-          {
-            "type": "command",
-            "word": "startup-config",
-            "words": [
-              {
-                "type": "command",
-                "word": "flash"
-              },
-              {
-                "type": "command",
-                "word": "ftp"
-              },
-              {
-                "type": "command",
-                "word": "running-config"
-              },
-              {
-                "type": "command",
-                "word": "scp"
-              },
-              {
-                "type": "command",
-                "word": "tftp"
-              }
-            ]
-          },
-          {
-            "type": "command",
-            "word": "tftp",
-            "words": [
-              {
-                "type": "command",
-                "word": "flash"
-              },
-              {
-                "type": "command",
-                "word": "ftp"
-              },
-              {
-                "type": "command",
-                "word": "running-config"
-              },
-              {
-                "type": "command",
-                "word": "scp"
-              },
-              {
-                "type": "command",
-                "word": "startup-config"
-              }
-            ]
+            "type": "param",
+            "word": "IP(v6)-address"
           }
         ]
       },
       {
         "type": "command",
-        "word": "delete",
+        "word": "write",
+        "description": "Speichert alle Einstellungen",
         "words": [
           {
-            "type": "param",
-            "word": "WORD"
+            "type": "command",
+            "word": "erase"
           },
           {
             "type": "command",
-            "word": "flash"
+            "word": "memory"
+          },
+          {
+            "type": "command",
+            "word": "terminal"
           }
         ]
       }
