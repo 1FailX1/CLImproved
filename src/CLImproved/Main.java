@@ -85,7 +85,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        JSONFileHandler.init("ciscofile.json");
+        JSONFileHandler.init("ciscoFile.json");
         //-----
         modes = JSONFileHandler.getModes();
         loaded_commands = JSONFileHandler.getWords();
