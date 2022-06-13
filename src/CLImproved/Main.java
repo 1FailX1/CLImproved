@@ -3,19 +3,19 @@ package CLImproved;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,19 +23,19 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 0.7.1
+ * @version 0.8
  */
 
 public class Main extends Application {
     String contentAtLastSave = "";
     String filePathAtLastSave = "";
 
+    String[] modes;
     String[] loaded_commands = {"d"};
     String[] loaded_descriptions = {"d"};
     BorderPane scene_borderPane = new BorderPane();
@@ -51,6 +51,7 @@ public class Main extends Application {
     Image header_appearanceSymbol_image;
     ImageView header_appearanceSymbol;
     private VBox header_vBox_container = new VBox();
+    Button[] header_modeButtons;
     Image center_addButton_image;
     ImageView center_addButton;
     private TextArea right_textArea;
@@ -64,44 +65,6 @@ public class Main extends Application {
 
     }
 
-    static public void testingFunctions() {
-        //JsonFileHandler-Test-----------------------------------------------------------
-        //loads json file
-        JSONFileHandler.init("prototyp2.json");
-        JSONFileHandler.changeMode(1);
-        System.out.println("getModes: " + Arrays.toString(JSONFileHandler.getModes()));//get all modes for header buttons
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
-
-        //simulating user input
-        JSONFileHandler.loadNextWords(2);
-        JSONFileHandler.loadNextWords(0);
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        JSONFileHandler.loadNextWords(0);
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        JSONFileHandler.loadNextWords(0);
-        JSONFileHandler.loadNextWords(0);
-        JSONFileHandler.loadNextWords(0);
-        /*
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
-        JSONFileHandler.pressedButton(0);
-
-        System.out.println("\n2nd user input");
-        JSONFileHandler.pressedButton(0);
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));
-        JSONFileHandler.pressedButton(0);
-        System.out.println("isParam: "+JSONFileHandler.isParam(0));
-
-        //simulate mode change
-        System.out.println("\nchange Mode");
-        JSONFileHandler.changeMode(JSONFileHandler.getModes()[1]);
-        System.out.println("getWords" + Arrays.toString(JSONFileHandler.getWords()));
-        System.out.println("get Descriptions " + Arrays.toString(JSONFileHandler.getDescriptions()));*/
-        System.out.println("----------------------------------------------------------------------------------------");
-    }
-
     /**
      * @param stage Opens the GUI-containing window
      */
@@ -109,9 +72,11 @@ public class Main extends Application {
     public void start(Stage stage) {
         JSONFileHandler.init("prototyp2.json");
         //-----
-        String[] modes = JSONFileHandler.getModes();
+        modes = JSONFileHandler.getModes();
         loaded_commands = JSONFileHandler.getWords();
         loaded_descriptions = JSONFileHandler.getDescriptions();
+
+        header_modeButtons = new Button[modes.length];
 
         stage.setTitle("CLImproved");
         stage.setResizable(false);
@@ -205,9 +170,34 @@ public class Main extends Application {
                 @Override
                 public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
                     if (rb2.isSelected()) {
-                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;");
-                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;");
-                        right_textArea.setStyle("-fx-background-color: #2b2b2b;");
+                        for (int i = 0; i < header_modeButtons.length; i++) {
+                            header_modeButtons[i].setId("darkMode_header_modeButton");
+                        }
+                        header_menuBar.setStyle("-fx-background-color: #555555;");
+                        header_menu1.setId("darkMode_menu");
+                        header_menu2.setId("darkMode_menu");
+                        header_menu3.setId("darkMode_menu");
+                        header_menu4.setId("darkMode_menu");
+
+                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151 #515151 transparent #515151;");
+
+                        center_scrollPane.setStyle("-fx-border-color: #3C3F41;" +
+                                "-fx-background: #3C3F41;" +
+                                "-fx-text-fill: #BBBBBB;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151;");
+
+                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;" +
+                                "-fx-background-radius: 0;");
+                        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
+                                "-fx-background-color: #2b2b2b;" +
+                                "-fx-text-fill: #A9B7C6;" +
+                                "-fx-border-color: #515151;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151 #515151 #515151 transparent;");
+
                     }
                 }
             });
@@ -254,26 +244,7 @@ public class Main extends Application {
         header_vBox_container.getChildren().addAll(header_menuBar, header_hBox_execmodes);
 
         //Looping through all available modes to create a menu in the header
-        for (int i = 0; i < modes.length; i++) {
-            Button modeButton = new Button(modes[i]);
-            modeButton.setFont(Font.font("System Regular", 15));
-            modeButton.setFocusTraversable(false);
-            int finalI_mode = i;
-            modeButton.setOnAction(actionEvent -> {
-                //Loading the new commands if the mode-changing button is pressed
-                JSONFileHandler.changeMode(finalI_mode);
-
-                center_gridPane.getChildren().clear();
-                loaded_commands = JSONFileHandler.getWords();
-                loaded_descriptions = JSONFileHandler.getDescriptions();
-                center_gridPane.setHgap(50);
-
-                //Printing out the commands in the center
-                printCurrentCommands();
-            });
-
-            header_hBox_execmodes.getChildren().add(modeButton);
-        }
+        printExecModes();
 
 
         //CENTER
@@ -291,12 +262,8 @@ public class Main extends Application {
         right_textArea = new TextArea(CommandWriter.content);
         right_textArea.setFocusTraversable(false);
         right_textArea.setPrefSize(400, 1000);
-        right_textArea.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                CommandWriter.content = right_textArea.getText();
-            }
-        });
+        right_textArea.textProperty().addListener((observableValue, s, t1) ->
+                CommandWriter.content = right_textArea.getText());
 
         //Adding to Layouts
         scene_borderPane.setTop(header_vBox_container);
@@ -304,41 +271,33 @@ public class Main extends Application {
         scene_borderPane.setRight(right_textArea);
         stage.getIcons().add(header_logo.getImage());
         stage.show();
-
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent e) {
-                Label secondLabel = new Label("I'm a Label on new Window");
-
-                StackPane secondaryLayout = new StackPane();
-                secondaryLayout.getChildren().add(secondLabel);
-
-                Scene secondScene = new Scene(secondaryLayout, 230, 100);
-
-                // New window (Stage)
-                Stage newWindow = new Stage();
-                newWindow.setTitle("Second Stage");
-                newWindow.setScene(secondScene);
-
-                // Specifies the modality for new window.
-                newWindow.initModality(Modality.WINDOW_MODAL);
-
-                // Specifies the owner Window (parent) for new window
-                newWindow.initOwner(stage);
-
-                // Set position of second window, related to primary window.
-                newWindow.setX(stage.getX() + 200);
-                newWindow.setY(stage.getY() + 100);
-
-                newWindow.show();
-                //killing the process
-                //Platform.exit();
-                //System.exit(0);
-            }
-        });
     }
 
-    public void printCurrentCommands() {
+    private void printExecModes() {
+
+        for (int i = 0; i < modes.length; i++) {
+            header_modeButtons[i] = new Button(modes[i]);
+            header_modeButtons[i].setFont(Font.font("System Regular", 15));
+            header_modeButtons[i].setFocusTraversable(false);
+            int finalI_mode = i;
+            header_modeButtons[i].setOnAction(actionEvent -> {
+                //Loading the new commands if the mode-changing button is pressed
+                JSONFileHandler.changeMode(finalI_mode);
+
+                center_gridPane.getChildren().clear();
+                loaded_commands = JSONFileHandler.getWords();
+                loaded_descriptions = JSONFileHandler.getDescriptions();
+                center_gridPane.setHgap(50);
+
+                //Printing out the commands in the center
+                printCurrentCommands();
+            });
+
+            header_hBox_execmodes.getChildren().add(header_modeButtons[i]);
+        }
+    }
+
+    private void printCurrentCommands() {
         center_gridPane.setHgap(50);
         center_gridPane.setVgap(5);
 
@@ -346,7 +305,8 @@ public class Main extends Application {
         for (int i1 = 0; i1 < loaded_commands.length; i1++) {
             int finalI_commands = i1;
             Button button1 = new Button();
-            button1.setBackground(null);
+            //button1.setBackground(null);
+            button1.setId("button_commands");
             button1.setGraphic(new ImageView(center_addButton_image));
             button1.setFocusTraversable(false);
             button1.setOnAction(actionEvent2 -> {

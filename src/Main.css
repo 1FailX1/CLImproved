@@ -1,5 +1,25 @@
 .root {
     -fx-focus-color: #000000;
     -fx-border-radius: 0;
-    /*faint-focus-color: black;*/
+}
+#button_commands{
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+}
+#darkMode_center_scrollPane{
+    -fx-border-color: #3C3F41;
+    -fx-background: #3C3F41;
+}
+#darkMode_menu .label{
+-fx-text-fill: #FFFFFF;
+}
+#darkMode_header_modeButton{
+    -fx-background-color: #3E869E;
+    -fx-background-radius: 20px;
+    -fx-border-color: #2B2B2B;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-background-insets: 2px;
 }
