@@ -124,7 +124,6 @@ public class JSONFileHandler {
                 descriptions[i] = "No Description";
             }
         }
-
         return descriptions;
     }
 
@@ -252,7 +251,6 @@ public class JSONFileHandler {
                 CommandWriter.makeBreak();
             }
         }
-
     }
 
     /**
