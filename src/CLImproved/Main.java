@@ -47,9 +47,9 @@ public class Main extends Application {
     String[] loaded_descriptions = {"d"};
     BorderPane scene_borderPane = new BorderPane();
     Image header_saveSymbol_image;
-    private HBox header_hBox_execmodes;
-    private ScrollPane center_scrollPane;
-    private GridPane center_gridPane;
+    HBox header_hBox_execmodes;
+    ScrollPane center_scrollPane;
+    GridPane center_gridPane;
     MenuBar header_menuBar;
     Menu header_menu1;
     Menu header_menu2;
@@ -61,12 +61,12 @@ public class Main extends Application {
     ImageView header_saveSymbol;
     Image header_appearanceSymbol_image;
     ImageView header_appearanceSymbol;
-    private VBox header_vBox_container = new VBox();
+    VBox header_vBox_container = new VBox();
     Label appearance_label;
     Button[] header_modeButtons;
     Image center_addButton_image;
     ImageView center_addButton;
-    private TextArea right_textArea;
+    TextArea right_textArea;
 
     RadioButton rb1 = new RadioButton();
     RadioButton rb2 = new RadioButton();
@@ -143,11 +143,8 @@ public class Main extends Application {
 
         MenuItem header_menu3Item1 = new MenuItem("About");
         //Functionality for all items below header_menu1
-        header_menu1Items[0].setOnAction(event -> {
-            saveAs(stage);
-        });
+        header_menu1Items[0].setOnAction(event -> saveAs(stage));
         header_menu1Items[1].setOnAction(event -> {
-            System.out.println(contentAtLastSave);
             if (!filePathAtLastSave.equals("")) {
                 try {
                     BufferedWriter output = Files.newBufferedWriter(Paths.get(filePathAtLastSave), StandardCharsets.UTF_8);
@@ -281,7 +278,7 @@ public class Main extends Application {
         right_textArea = new TextArea(CommandWriter.content);
         right_textArea.setFont(Font.font("System Regular", (int) (defFontSize * 0.7)));
         right_textArea.setFocusTraversable(false);
-        right_textArea.setPrefSize(400, 1000);
+        right_textArea.setPrefSize(monitorSize.getHeight() * 0.4, 1000);
         right_textArea.textProperty().addListener((observableValue, s, t1) ->
                 CommandWriter.content = right_textArea.getText());
 
@@ -330,7 +327,6 @@ public class Main extends Application {
         center_gridPane.setHgap(50);
         center_gridPane.setVgap(5);
 
-        // System.out.println(Arrays.toString(loaded_commands));
         for (int i1 = 0; i1 < loaded_commands.length; i1++) {
             int finalI_commands = i1;
             Button button1 = new Button();
@@ -355,9 +351,7 @@ public class Main extends Application {
                 right_textArea.setScrollTop(Double.MAX_VALUE);
                 right_textArea.positionCaret(CommandWriter.content.length());
             });
-            if (loaded_commands.length == 1) {
-                button1.fire();
-            }
+
             Label label1 = new Label(loaded_commands[i1]);
             label1.setFont(Font.font("System Regular", (int) (defFontSize * 0.7)));
             button1.setPrefWidth(40);
@@ -407,8 +401,8 @@ public class Main extends Application {
      * Graphically toggles the dark-mode option (standard).
      */
     private void toggleDarkMode() {
-        for (int i = 0; i < header_modeButtons.length; i++) {
-            header_modeButtons[i].setId("darkMode_header_modeButton");
+        for (Button header_modeButton : header_modeButtons) {
+            header_modeButton.setId("darkMode_header_modeButton");
         }
         header_menuBar.setId("darkMode_contextMenu");
         header_menuBar.setStyle("-fx-background-color: #555555;");
@@ -440,8 +434,8 @@ public class Main extends Application {
      * Graphically toggles the light-mode option.
      */
     private void toggleLightMode() {
-        for (int i = 0; i < header_modeButtons.length; i++) {
-            header_modeButtons[i].setId("lightMode_header_modeButton");
+        for (Button header_modeButton : header_modeButtons) {
+            header_modeButton.setId("lightMode_header_modeButton");
         }
         header_menuBar.setId("lightMode_contextMenu");
         header_menuBar.setStyle("-fx-background-color: #E9E9E9;" +
