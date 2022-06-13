@@ -2,6 +2,9 @@
     -fx-focus-color: #000000;
     -fx-border-radius: 0;
 }
+#darkMode_contextMenu .context-menu {
+    -fx-background-color: #555555;
+}
 #button_commands{
     -fx-border-color: transparent;
     -fx-border-width: 0;
@@ -14,6 +17,8 @@
 }
 #darkMode_menu .label{
 -fx-text-fill: #FFFFFF;
+-fx-background-color: transparent;
+-fx-color: #555555;
 }
 #darkMode_header_modeButton{
     -fx-background-color: #3E869E;

@@ -51,6 +51,7 @@ public class Main extends Application {
     Image header_appearanceSymbol_image;
     ImageView header_appearanceSymbol;
     private VBox header_vBox_container = new VBox();
+    Label appearance_label;
     Button[] header_modeButtons;
     Image center_addButton_image;
     ImageView center_addButton;
@@ -147,14 +148,46 @@ public class Main extends Application {
 
         header_menu4Item1.setOnAction(event -> {
             Stage aboutStage = new Stage();
+            BorderPane aboutPane = new BorderPane();
+            Scene aboutStage_scene = new Scene(aboutPane);
+
+            ImageView aboutPagelogoImage = header_logo;
+            HBox picuteHBox = new HBox(aboutPagelogoImage);
+            Label infoLabel = new Label("CLImproved for Windows\n" +
+                    "Version 1.3\n" +
+                    "GUI Version 0.7 (Beta)\n\n" +
+                    "Made by\n" +
+                    "-Felix Payer\n" +
+                    "-Hunor Zakarias\n\n" +
+                    "OS: " + System.getProperty("os.name") + "\n" +
+                    "Architecture: " + System.getProperty("os.arch") + "\n" +
+                    "Java Version: " + System.getProperty("java.version"));
+
+            infoLabel.setFont(new Font("System Regular", 15));
+
+            picuteHBox.setPadding(new Insets(50, 10, 10, 20));
+
+            aboutPagelogoImage.setFitWidth(80);
+            aboutPagelogoImage.setFitHeight(80);
+
+            aboutPane.setPrefWidth(Double.MAX_VALUE);
+            aboutPane.setPrefHeight(Double.MAX_VALUE);
+            aboutPane.setRight(infoLabel);
+            aboutPane.setLeft(picuteHBox);
+            aboutPane.setPadding(new Insets(10, 70, 10, 10));
+
             aboutStage.setResizable(false);
-            aboutStage.setWidth(500);
-            aboutStage.setHeight(700);
+            aboutStage.setWidth(330);
+            aboutStage.setHeight(300);
+
+            aboutStage.setTitle("About");
+            aboutStage.getIcons().add(header_logo_image);
+            aboutStage.setScene(aboutStage_scene);
             aboutStage.show();
         });
 
         header_menu2Items[0].setOnAction(actionEvent -> {
-            Label secondLabel = new Label("Appearance presets:");
+            appearance_label = new Label("Appearance presets:");
             final ToggleGroup appearance_toggleGroup = new ToggleGroup();
             RadioButton rb1 = new RadioButton("Regular");
             rb1.setToggleGroup(appearance_toggleGroup);
@@ -169,10 +202,44 @@ public class Main extends Application {
             appearance_toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
                 @Override
                 public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                    if (rb2.isSelected()) {
+                    if (rb1.isSelected()) {
                         for (int i = 0; i < header_modeButtons.length; i++) {
                             header_modeButtons[i].setId("darkMode_header_modeButton");
                         }
+                        /*ContextMenu contextMenu = new ContextMenu();
+                        contextMenu.setId("darkMode_context-menu");
+                        header_menuBar.setContextMenu(contextMenu);*/
+
+                        header_menuBar.setStyle("-fx-background-color: #555555;");
+                        header_menu1.setId("darkMode_menu");
+                        header_menu2.setId("darkMode_menu");
+                        header_menu3.setId("darkMode_menu");
+                        header_menu4.setId("darkMode_menu");
+
+                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151 #515151 transparent #515151;");
+
+                        center_scrollPane.setStyle("-fx-border-color: #3C3F41;" +
+                                "-fx-background: #3C3F41;" +
+                                "-fx-text-fill: #BBBBBB;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151;");
+
+                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;" +
+                                "-fx-background-radius: 0;");
+                        right_textArea.setStyle("-fx-border-color: #2b2b2b;" +
+                                "-fx-background-color: #2b2b2b;" +
+                                "-fx-text-fill: #A9B7C6;" +
+                                "-fx-border-color: #515151;" +
+                                "-fx-border-width: 2px;" +
+                                "-fx-border-color: #515151 #515151 #515151 transparent;");
+
+                    } else if (rb2.isSelected()) {
+                        for (int i = 0; i < header_modeButtons.length; i++) {
+                            header_modeButtons[i].setId("darkMode_header_modeButton");
+                        }
+                        header_menuBar.setId("darkMode_contextMenu");
                         header_menuBar.setStyle("-fx-background-color: #555555;");
                         header_menu1.setId("darkMode_menu");
                         header_menu2.setId("darkMode_menu");
@@ -205,7 +272,7 @@ public class Main extends Application {
             VBox appearance_vBox = new VBox();
             appearance_vBox.setPadding(new Insets(15));
             appearance_vBox.setSpacing(30);
-            appearance_vBox.getChildren().addAll(secondLabel, rb1, rb2, rb3);
+            appearance_vBox.getChildren().addAll(appearance_label, rb1, rb2, rb3);
 
             Scene secondScene = new Scene(appearance_vBox, 235, 180);
 
