@@ -13,7 +13,7 @@ import java.util.Stack;
 
 /**
  * @author Hunor Zakarias
- * @version 1.3
+ * @version 1.3.1
  */
 public class JSONFileHandler {
     //content of the file
@@ -93,12 +93,16 @@ public class JSONFileHandler {
 
         //loops through every element and gets the value for the object key "word"
         for (int i = 0; i < words.length; i++) {
-            try {
-                //tries to get the value for the object key "word"
-                words[i] = nextCommands.getJSONObject(i).getString("word");
-            } catch (Exception e) {
-                //executes if object key "word" is not available
-                words[i] = "";
+            if (nextCommands.getJSONObject(i).getString("type").equals("finish")) {
+                words[i] = "end";
+            } else {
+                try {
+                    //tries to get the value for the object key "word"
+                    words[i] = nextCommands.getJSONObject(i).getString("word");
+                } catch (Exception e) {
+                    //executes if object key "word" is not available
+                    words[i] = "";
+                }
             }
         }
         return words;
@@ -126,6 +130,7 @@ public class JSONFileHandler {
 
     /**
      * <p>loads next words which can be accessed by the getWords() method</p>
+     * @param indexOfPressedCommand index of the command from which the subcommands should be loaded
      */
     public static void loadNextWords(int indexOfPressedCommand) {
         try {
