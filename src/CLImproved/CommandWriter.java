@@ -1,8 +1,8 @@
 package CLImproved;
 
 public class CommandWriter {
-    static String content = "";
-    static String tabs = "";
+    static public String content = "";
+    static private String tabs = "";
     static private boolean lineJumpMade = true;
 
     /**
@@ -38,12 +38,5 @@ public class CommandWriter {
      */
     public static void removeTab() {
         tabs = tabs.substring(1);
-    }
-
-    /**
-     * makes a break
-     */
-    public static String getString() {
-        return content;
     }
 }

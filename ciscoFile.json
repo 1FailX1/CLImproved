@@ -5,20 +5,44 @@
       {
         "type": "command",
         "word": "enable",
-        "description": "Wechselt in den priviledged EXEC mode und fragt möglicherweise ein Passwort ab"
-      },
-      {
-        "type": "command",
-        "word": "reload",
-        "description": "Startet das System neu"
+        "description": "Turn on priviledged commands"
       },
       {
         "type": "command",
         "word": "ping",
+        "description": "sens a ping message",
         "words": [
           {
             "type": "param",
-            "word": "ping"
+            "word": "IP(v6)-address",
+            "description": "IP-address which should be pinged"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "reload",
+        "description": "restarts the system"
+      },
+      {
+        "type": "command",
+        "word": "telnet",
+        "description": "opens a telnet connection",
+        "words": [
+          {
+            "type": "param",
+            "word": "IP(v6)-address"
+          }
+        ]
+      },
+      {
+        "type": "command",
+        "word": "traceroute",
+        "description": "traces the route to a destination",
+        "words": [
+          {
+            "type": "param",
+            "word": "IP(v6)-address"
           }
         ]
       }
@@ -30,23 +54,24 @@
       {
         "type": "command/enterSubMode",
         "word": "configure terminal",
-        "description": "Wechselt in den global config mode",
+        "description": "enter global configuration mode",
         "submode": {
-          "category": "global config mode",
           "words": [
             {
               "type": "command",
               "word": "banner motd",
+              "description": "define a banner message of the day",
               "words": [
                 {
                   "type": "param",
-                  "word": "Nachricht"
+                  "word": "message"
                 }
               ]
             },
             {
               "type": "command",
               "word": "crypto",
+              "description": "encryption module",
               "words": [
                 {
                   "type": "command",
@@ -110,6 +135,7 @@
             {
               "type": "multiCommand",
               "word": "enable",
+              "description": "modify enable password parameters",
               "words": [
                 [
                   {
