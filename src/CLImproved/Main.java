@@ -29,7 +29,7 @@ import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 0.7
+ * @version 0.7.1
  */
 
 public class Main extends Application {
@@ -53,7 +53,7 @@ public class Main extends Application {
     private VBox header_vBox_container = new VBox();
     Image center_addButton_image;
     ImageView center_addButton;
-    private TextArea right_textField;
+    private TextArea right_textArea;
 
     /**
      * @param args Main-method for launching the window
@@ -125,7 +125,7 @@ public class Main extends Application {
 
         //Importing graphics
         try {
-            header_logo_image = new Image(new FileInputStream("assets\\CLImproved_Logo.png"));
+            header_logo_image = new Image(new FileInputStream("assets\\CLImproved_newLogo.png"));
             header_logo = new ImageView(header_logo_image);
             header_saveAsSymbol_image = new Image(new FileInputStream("assets\\saveAs_icon.png"));
             header_saveAsSymbol = new ImageView(new Image(new FileInputStream("assets\\saveAs_icon.png")));
@@ -142,7 +142,7 @@ public class Main extends Application {
         header_saveAsSymbol.setFitHeight(15);
         header_saveSymbol.setFitWidth(15);
         header_saveSymbol.setFitHeight(15);
-        header_appearanceSymbol.setFitWidth(15);
+        header_appearanceSymbol.setFitWidth(17);
         header_appearanceSymbol.setFitHeight(15);
 
         //HEADER
@@ -186,6 +186,50 @@ public class Main extends Application {
             aboutStage.setWidth(500);
             aboutStage.setHeight(700);
             aboutStage.show();
+        });
+
+        header_menu2Items[0].setOnAction(actionEvent -> {
+            Label secondLabel = new Label("Appearance presets:");
+            final ToggleGroup appearance_toggleGroup = new ToggleGroup();
+            RadioButton rb1 = new RadioButton("Regular");
+            rb1.setToggleGroup(appearance_toggleGroup);
+            rb1.setSelected(true);
+
+            RadioButton rb2 = new RadioButton("Dark Mode");
+            rb2.setToggleGroup(appearance_toggleGroup);
+
+            RadioButton rb3 = new RadioButton("Please don't");
+            rb3.setToggleGroup(appearance_toggleGroup);
+
+            appearance_toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+                @Override
+                public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                    if (rb2.isSelected()) {
+                        header_hBox_execmodes.setStyle("-fx-background-color: #3C3F41;");
+                        right_textArea.lookup(".content").setStyle("-fx-background-color: #2b2b2b;");
+                        right_textArea.setStyle("-fx-background-color: #2b2b2b;");
+                    }
+                }
+            });
+
+            VBox appearance_vBox = new VBox();
+            appearance_vBox.setPadding(new Insets(15));
+            appearance_vBox.setSpacing(30);
+            appearance_vBox.getChildren().addAll(secondLabel, rb1, rb2, rb3);
+
+            Scene secondScene = new Scene(appearance_vBox, 235, 180);
+
+            // New window (Stage)
+            Stage newWindow = new Stage();
+            newWindow.getIcons().add(header_appearanceSymbol_image);
+            newWindow.setTitle("Appearance");
+            newWindow.setScene(secondScene);
+
+            // Set position of second window, related to primary window.
+            newWindow.setX(stage.getX() + 400);
+            newWindow.setY(stage.getY() + 300);
+
+            newWindow.show();
         });
 
         header_menu1Items[0].setGraphic(header_saveAsSymbol);
@@ -244,20 +288,20 @@ public class Main extends Application {
         center_scrollPane.setContent(center_gridPane);
 
         //RIGHT
-        right_textField = new TextArea(CommandWriter.content);
-        right_textField.setFocusTraversable(false);
-        right_textField.setPrefSize(400, 1000);
-        right_textField.textProperty().addListener(new ChangeListener<String>() {
+        right_textArea = new TextArea(CommandWriter.content);
+        right_textArea.setFocusTraversable(false);
+        right_textArea.setPrefSize(400, 1000);
+        right_textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                CommandWriter.content = right_textField.getText();
+                CommandWriter.content = right_textArea.getText();
             }
         });
 
         //Adding to Layouts
         scene_borderPane.setTop(header_vBox_container);
         scene_borderPane.setCenter(center_scrollPane);
-        scene_borderPane.setRight(right_textField);
+        scene_borderPane.setRight(right_textArea);
         stage.getIcons().add(header_logo.getImage());
         stage.show();
 
@@ -322,9 +366,9 @@ public class Main extends Application {
                 center_scrollPane.setContent(center_gridPane);
                 scene_borderPane.setCenter(center_scrollPane);
                 //Refreshing the TextField
-                right_textField.setText(CommandWriter.content);
-                right_textField.setScrollTop(Double.MAX_VALUE);
-                right_textField.positionCaret(CommandWriter.content.length());
+                right_textArea.setText(CommandWriter.content);
+                right_textArea.setScrollTop(Double.MAX_VALUE);
+                right_textArea.positionCaret(CommandWriter.content.length());
             });
 
             Label label1 = new Label(loaded_commands[i1]);
