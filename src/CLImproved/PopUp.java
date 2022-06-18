@@ -14,7 +14,10 @@ public class PopUp {
     }
 
     public static String readLine(String prompt) {
-        String s = JOptionPane.showInputDialog(null, prompt, "Eingabe", JOptionPane.PLAIN_MESSAGE);
+        JFrame jf = new JFrame();
+        jf.setAlwaysOnTop(true);
+        jf.requestFocus();
+        String s = JOptionPane.showInputDialog(jf, prompt, "Eingabe", JOptionPane.PLAIN_MESSAGE);
         return (s != null) ? s : "";
     }
 

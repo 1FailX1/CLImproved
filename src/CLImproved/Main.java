@@ -34,7 +34,7 @@ import static java.lang.Integer.MAX_VALUE;
 
 /**
  * @author 1FailX1 (Felix Payer)
- * @version 1.0
+ * @version 1.0.1
  */
 
 public class Main extends Application {
@@ -68,8 +68,10 @@ public class Main extends Application {
     ImageView center_addButton;
     TextArea right_textArea;
 
-    RadioButton rb1 = new RadioButton();
-    RadioButton rb2 = new RadioButton();
+    RadioButton rb1 = new RadioButton("Dark Mode");
+    RadioButton rb2 = new RadioButton("Light Mode");
+
+    boolean radioButtonFirstPress = true;
 
     /**
      * @param args Main-method for launching the window.
@@ -202,11 +204,11 @@ public class Main extends Application {
         header_menu2Items[0].setOnAction(actionEvent -> {
             appearance_label = new Label("Appearance presets:");
             final ToggleGroup appearance_toggleGroup = new ToggleGroup();
-            rb1 = new RadioButton("Dark Mode");
             rb1.setToggleGroup(appearance_toggleGroup);
-            rb1.setSelected(true);
-
-            rb2 = new RadioButton("Light Mode");
+            if (radioButtonFirstPress) {
+                rb1.setSelected(true);
+                radioButtonFirstPress = false;
+            }
             rb2.setToggleGroup(appearance_toggleGroup);
 
 
@@ -351,7 +353,9 @@ public class Main extends Application {
                 right_textArea.setScrollTop(Double.MAX_VALUE);
                 right_textArea.positionCaret(CommandWriter.content.length());
             });
-
+            if (loaded_commands.length == 1) {
+                button1.fire();
+            }
             Label label1 = new Label(loaded_commands[i1]);
             label1.setFont(Font.font("System Regular", (int) (defFontSize * 0.7)));
             button1.setPrefWidth(40);
