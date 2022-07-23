@@ -26,6 +26,455 @@
       },
       {
         "type": "command",
+        "word": "show",
+        "description": "",
+        "words": [
+          {
+            "type": "command",
+            "word": "arp",
+            "description": "Arp table"
+          },
+          {
+            "type": "command",
+            "word": "cdp",
+            "description": "CDP information",
+            "words": [
+              {
+                "type": "multiCommand",
+                "word": "entry",
+                "description": "Information for specific neighbor entry",
+                "words": [
+                  [
+                    {
+                      "type": "command",
+                      "word": "*",
+                      "description": "all CDP neighbor entries"
+                    },
+                    {
+                      "type": "param",
+                      "word": "name",
+                      "description": "Name of CDP neighbor entry"
+                    }
+                  ],
+                  [
+                    {
+                      "type": "command",
+                      "word": "protocol",
+                      "description": "Protocol information"
+                    },
+                    {
+                      "type": "command",
+                      "word": "version",
+                      "description": "Version information"
+                    },
+                    {
+                      "type": "finish"
+                    }
+                  ]
+                ]
+              },
+              {
+                "type": "command",
+                "word": "interface",
+                "description": "CDP interface status and configuration"
+              },
+              {
+                "type": "command",
+                "word": "neighbors",
+                "description": "CDP neighbor entries"
+              },
+              {
+                "type": "finish"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "class-map",
+            "description": "Show QoS Class Map",
+            "words": [
+              {
+                "type": "param",
+                "word": "class-map name"
+              },
+              {
+                "type": "finish"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "clock",
+            "description": "Display the system clock",
+            "words": [
+              {
+                "type": "command",
+                "word": "detail",
+                "description": "Display detailed information"
+              },
+              {
+                "type": "finish"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "controllers",
+            "description": "Interface controllers status",
+            "words": [
+              {
+                "type": "command",
+                "word": "Ethernet",
+                "description": "IEEE 802.3"
+              },
+              {
+                "type": "command",
+                "word": "FastEthernet",
+                "description": "FastEthernet IEEE 802.3"
+              },
+              {
+                "type": "command",
+                "word": "GigabitEthernet",
+                "description": "GigabitEthernet IEEE 802.3z"
+              },
+              {
+                "type": "command",
+                "word": "Serial",
+                "description": "Serial"
+              },
+              {
+                "type": "finish"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "crypto",
+            "words": [
+              {
+                "type": "command",
+                "word": "key",
+                "words": [
+                  {
+                    "type": "command",
+                    "word": "mypubkey",
+                    "words": [
+                      {
+                        "type": "command",
+                        "word": "rsa"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "dot11",
+            "description": "IEEE 802.11 show information",
+            "words": [
+              {
+                "type": "command",
+                "word": "interface",
+                "description": "Interface statistics information"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "flash:",
+            "description": "display information about flash: file system"
+          },
+          {
+            "type": "command",
+            "word": "frame-relay",
+            "description": "Frame-Relay information",
+            "words": [
+              {
+                "type": "command",
+                "word": "lmi",
+                "description": "show frame relay lmi statistics"
+              },
+              {
+                "type": "command",
+                "word": "map",
+                "description": "Frame-Relay map table"
+              },
+              {
+                "type": "command",
+                "word": "pvc",
+                "description": "show frame relay pvc statistics"
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "history",
+            "description": "Display the session command history"
+          },
+          {
+            "type": "command",
+            "word": "hosts",
+            "description": "IP domain-name, lookup style, nameservers, and host table"
+          },
+          {
+            "type": "command",
+            "word": "interfaces",
+            "description": "Interface status and configuration"
+          },
+          {
+            "type": "command",
+            "word": "ip",
+            "description": "IP information",
+            "words": [
+              {
+                "type": "command",
+                "word": "arp",
+                "description": "IP ARP table"
+              },
+              {
+                "type": "command",
+                "word": "bgp",
+                "description": "BGP information",
+                "words": [
+                  {
+                    "type": "command",
+                    "word": "neighbors",
+                    "description": "Detailed information on TCP and BGP neighbor connections"
+                  },
+                  {
+                    "type": "command",
+                    "word": "summary",
+                    "description": "Summary of BGP neighbor status"
+                  }
+                ]
+              },
+              {
+                "type": "command",
+                "word": "dhcp",
+                "description": "Show items in the DHCP database",
+                "words": [
+                  {
+                    "type": "command",
+                    "word": "binding",
+                    "description": "DHCP address bindings"
+                  },
+                  {
+                    "type": "command",
+                    "word": "conflict",
+                    "description": "DHCP address conflicts"
+                  },
+                  {
+                    "type": "command",
+                    "word": "pool",
+                    "description": "DHCP pools information",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "pool name"
+                      },
+                      {
+                        "type": "finish"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "command",
+                "word": "eigrp",
+                "description": "IP-EIGRP show commands",
+                "words": [
+                  {
+                    "type": "command",
+                    "word": "interfaces",
+                    "description": "IP-EIGRP interfaces",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "AS Number"
+                      },
+                      {
+                        "type": "finish"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "command",
+                    "word": "neighbors",
+                    "description": "IP-EIGRP neighbors",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "AS Number"
+                      },
+                      {
+                        "type": "finish"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "command",
+                    "word": "topology",
+                    "description": "IP-EIGRP Topology Table",
+                    "words": [
+                      {
+                        "type": "param",
+                        "word": "AS Number"
+                      },
+                      {
+                        "type": "param",
+                        "word": "IPv4 Address",
+                        "description": "Network to display information about"
+                      },
+                      {
+                        "type": "command",
+                        "word": "all-links",
+                        "description": "Show all links in topology table"
+                      },
+                      {
+                        "type": "finish"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "command",
+                "word": "traffic",
+                "description": "IP-EIGRP Traffic Statistics",
+                "words": [
+                  {
+                    "type": "param",
+                    "word": "AS Number"
+                  },
+                  {
+                    "type": "finish"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "word": "interface",
+            "description": "IP interface status and configuration"
+          },
+          {
+            "type": "command",
+            "word": "nbar",
+            "description": "Network-Based Application Recognition"
+          },
+          {
+            "type": "command",
+            "word": "ospf",
+            "description": "OSPF information"
+          },
+          {
+            "type": "command",
+            "word": "protocols",
+            "description": "IP routing protocol process parameters and statistics"
+          },
+          {
+            "type": "command",
+            "word": "rip",
+            "description": "IP RIP show commands"
+          },
+          {
+            "type": "command",
+            "word": "route",
+            "description": "IP routing table"
+          },
+          {
+            "type": "command",
+            "word": "ssh",
+            "description": "Information on SSH"
+          },
+          {
+            "type": "command",
+            "word": "ipv6",
+            "description": "IPv6 information"
+          },
+          {
+            "type": "command",
+            "word": "lldp",
+            "description": "LLDP information"
+          },
+          {
+            "type": "command",
+            "word": "policy-map",
+            "description": "Show QoS Policy Map"
+          },
+          {
+            "type": "command",
+            "word": "pppoe",
+            "description": "PPPoE information"
+          },
+          {
+            "type": "command",
+            "word": "privilege",
+            "description": "Show current privilege level"
+          },
+          {
+            "type": "command",
+            "word": "protocols",
+            "description": "Active network routing protocols"
+          },
+          {
+            "type": "command",
+            "word": "queue",
+            "description": "Show queue contents"
+          },
+          {
+            "type": "command",
+            "word": "queueing",
+            "description": "Show queueing configuration"
+          },
+          {
+            "type": "command",
+            "word": "sessions",
+            "description": "Information about Telnet connections"
+          },
+          {
+            "type": "command",
+            "word": "ssh",
+            "description": "Status of SSH server connections"
+          },
+          {
+            "type": "command",
+            "word": "tcp",
+            "description": "Status of TCP connections"
+          },
+          {
+            "type": "command",
+            "word": "terminal",
+            "description": "Display terminal configuration parameters"
+          },
+          {
+            "type": "command",
+            "word": "users",
+            "description": "Display information about terminal lines"
+          },
+          {
+            "type": "command",
+            "word": "version",
+            "description": "System hardware and software status"
+          },
+          {
+            "type": "command",
+            "word": "vlan-switch",
+            "description": "VTP VLAN status"
+          },
+          {
+            "type": "command",
+            "word": "vtp",
+            "description": "Configure VLAN database"
+          }
+        ]
+      },
+      {
+        "type": "command",
         "word": "telnet",
         "description": "opens a telnet connection",
         "words": [
