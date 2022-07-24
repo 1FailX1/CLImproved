@@ -367,7 +367,6 @@ public class Main extends Application {
             center_gridPane.add(label2, 2, i1);
 
         }
-
     }
 
     /**

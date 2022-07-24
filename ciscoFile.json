@@ -10,12 +10,17 @@
       {
         "type": "command",
         "word": "ping",
-        "description": "sens a ping message",
+        "description": "sends a ping message",
         "words": [
           {
             "type": "param",
-            "word": "IP(v6)-address",
+            "word": "IPv4-address",
             "description": "IP-address which should be pinged"
+          },
+          {
+            "type": "param",
+            "word": "IPv6-address",
+            "description": "IPv6-address which should be pinged"
           }
         ]
       },
